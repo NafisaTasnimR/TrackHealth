@@ -25,6 +25,25 @@ public class AuthenticationService {
 
     public boolean login(String email,String password)
     {
-        return true;
+        List<User> users = userRepository.findUser(email);
+
+        if (!users.isEmpty())
+        {
+            User user = users.get(0);
+            if(user.getPassword().equals(password))
+            {
+                System.out.println("Incorrect password!");
+                return false;
+            }
+            else
+            {
+                System.out.println("Welcome " + user.getUserName());
+                return true;
+            }
+
+        }
+        System.out.println("Incorrect email!");
+        return false;
+
     }
 }
