@@ -10,7 +10,6 @@ public class AuthenticationTest {
     public void testRegister01()
     {
         boolean expectedValue = true;
-        UserRepository userRepository;
         AuthenticationService authentication01 = new AuthenticationService(new CSVUserRepository());
         boolean actualValue = authentication01.register("user01","Nafisa Tasnim",22,"Female",
                 "nafisatasnim8855@gmail.com","password1234");
@@ -21,11 +20,36 @@ public class AuthenticationTest {
     public void testRegister02()
     {
         boolean expectedValue = false;
-        UserRepository userRepository;
         AuthenticationService authentication01 = new AuthenticationService(new CSVUserRepository());
         boolean actualValue = authentication01.register("user01","Nafisa Tasnim",22,"Female",
                 "nafisatasnim8855@gmail.com","password1234");
         assertEquals(expectedValue,actualValue);
     }
 
+    @Test
+    public void testLogin01()
+    {
+        boolean expectedValue = true;
+        AuthenticationService authenticationService = new AuthenticationService(new CSVUserRepository());
+        boolean actualValue = authenticationService.login("nafisatasnim8855@gmail.com","password1234");
+        assertEquals(expectedValue,actualValue);
+    }
+
+    @Test
+    public void testLogin02()
+    {
+        boolean expectedValue = false;
+        AuthenticationService authenticationService = new AuthenticationService(new CSVUserRepository());
+        boolean actualValue = authenticationService.login("nafisatasnim22@gmail.com","password1234");
+        assertEquals(expectedValue,actualValue);
+    }
+
+    @Test
+    public void testLogin03()
+    {
+        boolean expectedValue = false;
+        AuthenticationService authenticationService = new AuthenticationService(new CSVUserRepository());
+        boolean actualValue = authenticationService.login("nafisatasnim8855@gmail.com","password12345");
+        assertEquals(expectedValue,actualValue);
+    }
 }

@@ -30,7 +30,7 @@ public class AuthenticationService {
         if (!users.isEmpty())
         {
             User user = users.get(0);
-            if(user.getPassword().equals(password))
+            if(!password.equals(user.getPassword()))
             {
                 System.out.println("Incorrect password!");
                 return false;
