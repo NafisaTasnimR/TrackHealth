@@ -1,9 +1,7 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CSVUserRepository implements UserRepository{
@@ -23,6 +21,18 @@ public class CSVUserRepository implements UserRepository{
 
     @Override
     public List<User> findUser(String email) {
-        return null;
+        List<User> users = new ArrayList<>();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("userData.csv"))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 6 && parts[4].equals(email)) {
+                    users.add(new User(parts[0], parts[1], Integer.parseInt(parts[2]), parts[3], parts[4], parts[5]));
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return users;
     }
 }
