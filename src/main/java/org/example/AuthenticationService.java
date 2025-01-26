@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.HashMap;
 
-public class Authentication {
+public class AuthenticationService {
     private HashMap<String, User> users = new HashMap<>();
     public boolean register(String userId,String name,int age,
                             String gender,String email,String password)
