@@ -1,21 +1,26 @@
 package org.example;
-
-import java.util.HashMap;
+import java.util.List;
 
 public class AuthenticationService {
-    private HashMap<String, User> users = new HashMap<>();
-    public boolean register(String userId,String name,int age,
-                            String gender,String email,String password)
+    private final UserRepository userRepository;
+
+    public AuthenticationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean register(String userId, String name, int age,
+                            String gender, String email, String password)
     {
-        if(users.containsKey(email))
-        {
-            System.out.println("You are already registered with this email!");
+        List<User> users = userRepository.findUser(email);
+        if (!users.isEmpty()) {
+            System.out.println("An user with this email already exists!");
             return false;
+        } else {
+            User user = new User(userId,name,age,gender,email,password);
+            userRepository.addUser(user);
+            System.out.println("Registration successful!");
+            return true;
         }
-        User user = new User(userId,name,age,gender,email,password);
-        users.put(email,user);
-        System.out.println("Registration successful!");
-        return true;
     }
 
     public boolean login(String email,String password)
