@@ -1,6 +1,5 @@
 import org.example.AuthenticationService;
 import org.example.CSVUserRepository;
-import org.example.UserRepository;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
