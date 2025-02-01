@@ -7,9 +7,7 @@ public class WeightGainGoal extends Goal{
     }
 
     @Override
-    public String setDietPlan() {
-        return null;
-    }
+    public String setDietPlan() { return null; }
 
     @Override
     public String setWorkoutPlan() {
