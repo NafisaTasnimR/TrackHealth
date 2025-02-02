@@ -12,16 +12,22 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator{
         if(getDurationInWeek() >= 12)
         {
             weightChangeRation = 0.0025;
-            weeklyWeightChange = getCurrentWeight()*weightChangeRation;
         }
         else {
             weightChangeRation = 0.005;
-            weeklyWeightChange = getCurrentWeight()*weightChangeRation;
         }
+        weeklyWeightChange = getCurrentWeight()*weightChangeRation;
         return weeklyWeightChange;
     }
     @Override
-    public String setDietPlan() { return null; }
+    public String setDietPlan() {
+        System.out.println("--------------------------------------");
+        System.out.println("Your weekly weight gain target is " + calculateWeeklyWeightChange() + "pound");
+        System.out.println("--------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-8s |\n", "Meal", "Food Items", "Calories");
+        System.out.println("--------------------------------------");
+        return null;
+    }
 
     @Override
     public String setWorkoutPlan() {
