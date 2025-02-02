@@ -18,4 +18,24 @@ public abstract class Goal {
     public abstract String setDietPlan();
     public abstract String setWorkoutPlan();
     public abstract String trackProgress();
+
+    public double getCurrentWeight() {
+        return currentWeight;
+    }
+
+    public double getTargetWeight() {
+        return targetWeight;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public int getDurationInWeek() {
+        return durationInWeek;
+    }
+
+    public String getExercisePlace() {
+        return exercisePlace;
+    }
 }
