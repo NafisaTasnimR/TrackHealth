@@ -1,6 +1,8 @@
 package org.example;
 
-public class WeightGainGoal extends Goal implements WeightChangeCalculator{
+import java.util.Objects;
+
+public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCalculator{
     public WeightGainGoal(double currentWeight, double targetWeight, double height,
                           int durationInWeek, String exercisePlace) {
         super(currentWeight, targetWeight, height, durationInWeek, exercisePlace);
@@ -18,6 +20,19 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator{
         }
         weeklyWeightChange = getCurrentWeight()*weightChangeRation;
         return weeklyWeightChange;
+    }
+
+    @Override
+    public double calculateBMR(double weightInKg, double heightIncm, int age, String gender) {
+        double BMRValue;
+        if(Objects.equals(gender, "male"))
+        {
+            BMRValue = 88.362 + (13.397*weightInKg) + (4.799*heightIncm) - (5.677*age);
+        }
+        else {
+            BMRValue = 447.593 + (9.247*weightInKg) + (3.098*heightIncm) - (4.330*age);
+        }
+        return BMRValue;
     }
     @Override
     public String setDietPlan() {
