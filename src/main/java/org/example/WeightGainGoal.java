@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Objects;
 
-public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCalculator{
+public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCalculator,CalorieCalculator{
     public WeightGainGoal(double currentWeight, double targetWeight, double height,
                           int durationInWeek, String exercisePlace) {
         super(currentWeight, targetWeight, height, durationInWeek, exercisePlace);
@@ -34,6 +34,54 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCa
         }
         return BMRValue;
     }
+
+    @Override
+    public double calculateTDEE(double BMR, String activityLevel) {
+        double tdee,activityFactor;
+        if(Objects.equals(activityLevel,"Sedentary"))
+        {
+            activityFactor = 1.2;
+        } else if (Objects.equals(activityLevel,"Light Activity")) {
+            activityFactor = 1.375;
+        } else if (Objects.equals(activityLevel,"Moderate Activity")) {
+            activityFactor = 1.55;
+        } else if (Objects.equals(activityLevel,"Very Active")) {
+            activityFactor = 1.725;
+        } else if (Objects.equals(activityLevel,"Super Active")) {
+            activityFactor = 1.9;
+        }else {
+            System.out.println("Choose correct activity level");
+            activityFactor = 0.0;
+        }
+        tdee = BMR*activityFactor;
+        return tdee;
+    }
+
+    @Override
+    public double calculateDailyCalorieNeed(double TDEE) {
+        return 0;
+    }
+
+    @Override
+    public double calculateCalorieForBreakfast(double dailyCalorieNeed) {
+        return 0;
+    }
+
+    @Override
+    public double calculateCalorieForLunch(double dailyCalorieNeed) {
+        return 0;
+    }
+
+    @Override
+    public double calculateCalorieForDinner(double dailyCalorieNeed) {
+        return 0;
+    }
+
+    @Override
+    public double calculateCalorieForSnack(double dailyCalorieNeed) {
+        return 0;
+    }
+
     @Override
     public String setDietPlan(String gender) {
         System.out.println("--------------------------------------");
