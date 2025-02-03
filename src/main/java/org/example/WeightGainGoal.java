@@ -59,27 +59,27 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCa
 
     @Override
     public double calculateDailyCalorieNeed(double TDEE) {
-        return 0;
+        return TDEE + 350;
     }
 
     @Override
     public double calculateCalorieForBreakfast(double dailyCalorieNeed) {
-        return 0;
+        return dailyCalorieNeed*0.2;
     }
 
     @Override
     public double calculateCalorieForLunch(double dailyCalorieNeed) {
-        return 0;
+        return dailyCalorieNeed*0.3;
     }
 
     @Override
     public double calculateCalorieForDinner(double dailyCalorieNeed) {
-        return 0;
+        return dailyCalorieNeed*0.3;
     }
 
     @Override
     public double calculateCalorieForSnack(double dailyCalorieNeed) {
-        return 0;
+        return dailyCalorieNeed*0.1;
     }
 
     @Override
