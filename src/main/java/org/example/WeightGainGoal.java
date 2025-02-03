@@ -35,12 +35,14 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCa
         return BMRValue;
     }
     @Override
-    public String setDietPlan() {
+    public String setDietPlan(String gender) {
         System.out.println("--------------------------------------");
         System.out.println("Your weekly weight gain target is " + calculateWeeklyWeightChange() + "pound");
         System.out.println("--------------------------------------");
         System.out.printf("| %-10s | %-15s | %-8s |\n", "Meal", "Food Items", "Calories");
         System.out.println("--------------------------------------");
+        if(Objects.equals(gender, "male"))
+        System.out.printf("| %-10s | %-15s | %-8s |\n", "Morning", "", "");
         return null;
     }
 
