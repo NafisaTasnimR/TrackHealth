@@ -9,7 +9,7 @@ public class WeightLossGoal extends Goal{
     }
 
     @Override
-    public String setDietPlan(String gender) {
+    public String setDietPlan(String gender,int age,String activityLevel) {
         return null;
     }
 

@@ -83,14 +83,40 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCa
     }
 
     @Override
-    public String setDietPlan(String gender) {
+    public String setDietPlan(String gender,int age,String activityLevel) {
+        double bmr = calculateBMR(getCurrentWeight(), getHeight(), age, gender);
+        double tdee = calculateTDEE(bmr, activityLevel);
+        double dailyCalorieNeed = calculateDailyCalorieNeed(tdee);
+        double breakfastCalories = calculateCalorieForBreakfast(dailyCalorieNeed);
+        double lunchCalories = calculateCalorieForLunch(dailyCalorieNeed);
+        double dinnerCalories = calculateCalorieForDinner(dailyCalorieNeed);
+        double snackCalories = calculateCalorieForSnack(dailyCalorieNeed);
         System.out.println("--------------------------------------");
         System.out.println("Your weekly weight gain target is " + calculateWeeklyWeightChange() + "pound");
         System.out.println("--------------------------------------");
         System.out.printf("| %-10s | %-15s | %-8s |\n", "Meal", "Food Items", "Calories");
         System.out.println("--------------------------------------");
-        if(Objects.equals(gender, "male"))
-        System.out.printf("| %-10s | %-15s | %-8s |\n", "Morning", "", "");
+        System.out.printf("| %-10s | %-15s | %-8.2f |\n", "Morning",
+                "Base: Oats, Rice Porridge, Whole Wheat Bread, Roti, Milk, Yogurt, " +
+                        "Nuts, Honey, Butter, Cheese, Peanut Butter, Eggs",
+               breakfastCalories);
+        System.out.println("--------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-8.2f |\n", "Mid-Morning Snack",
+                "Bananas, Dates, Nuts, Almonds, Smoothies, Dark Chocolate, Cheese, Boiled Eggs",
+                snackCalories);
+        System.out.println("--------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-8.2f |\n", "Lunch",
+                "Rice, Whole Wheat Bread, Potatoes, Chicken, Lentils, Beans, Avocado, Olive Oil, Fish, Tofu, Vegetables",
+                lunchCalories);
+        System.out.println("--------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-8.2f |\n", "Afternoon Snack",
+                "Yogurt, Trail Mix, Peanut Butter Toast, Fruit Salad, Nuts, Milkshake",
+                snackCalories);
+        System.out.println("--------------------------------------");
+        System.out.printf("| %-10s | %-15s | %-8.2f |\n", "Dinner",
+                "Whole Wheat Bread, Rice, Potatoes, Meat, Fish, Eggs, Lentils, Butter, Vegetables, Olive Oil, Soup",
+                dinnerCalories);
+        System.out.println("--------------------------------------");
         return null;
     }
 
