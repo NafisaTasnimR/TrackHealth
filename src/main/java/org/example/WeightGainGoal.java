@@ -94,7 +94,7 @@ public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCa
         if(tdee != 0.00) {
             System.out.println("----------------------------------------------------------------------------------" +
                     "----------------");
-            System.out.println("Your weekly weight gain target is " + calculateWeeklyWeightChange() + "kg");
+            System.out.printf("| %-94s |\n","Your Weekly Weight Gain Target Is " + calculateWeeklyWeightChange() + "kg");
             System.out.println("----------------------------------------------------------------------------------" +
                     "----------------");
             System.out.printf("| %-20s | %-60s | %-8s |\n", "Meal", "Food Items", "Calories");
