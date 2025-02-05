@@ -15,7 +15,7 @@ public abstract class Goal {
         this.exercisePlace = exercisePlace;
     }
 
-    public abstract String setDietPlan(String gender,int age,String activityLevel);
+    public abstract boolean setDietPlan(String gender,int age,String activityLevel);
     public abstract String setWorkoutPlan();
     public abstract String trackProgress();
 
