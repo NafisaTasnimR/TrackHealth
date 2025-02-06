@@ -1,6 +1,7 @@
 import org.example.Goal;
 import org.example.WeightGainGoal;
 import org.example.WeightLossGoal;
+import org.example.WeightMaintenanceGoal;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,6 +22,16 @@ public class GoalTest {
     {
         boolean expectedValue = true;
         Goal weightGain = new WeightLossGoal(61.90,57.00,
+                155.58,12,"home");
+        boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
+        assertEquals(expectedValue,actualValue);
+    }
+
+    @Test
+    public void testSetGoalForWeightMaintenance()
+    {
+        boolean expectedValue = true;
+        Goal weightGain = new WeightMaintenanceGoal(61.90,57.00,
                 155.58,12,"home");
         boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
         assertEquals(expectedValue,actualValue);
