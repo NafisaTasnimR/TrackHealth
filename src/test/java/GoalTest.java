@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class GoalTest {
     @Test
-    public void testSetGoalForWeightGain()
+    public void testSetDietPlanForWeightGain()
     {
         boolean expectedValue = true;
         Goal weightGain = new WeightGainGoal(61.90,57.00,
@@ -18,7 +18,7 @@ public class GoalTest {
     }
 
     @Test
-    public void testSetGoalForWeightLoss()
+    public void testSetDietPlanForWeightLoss()
     {
         boolean expectedValue = true;
         Goal weightGain = new WeightLossGoal(61.90,57.00,
@@ -28,7 +28,7 @@ public class GoalTest {
     }
 
     @Test
-    public void testSetGoalForWeightMaintenance()
+    public void testSetDietPlanForWeightMaintenance()
     {
         boolean expectedValue = true;
         Goal weightGain = new WeightMaintenanceGoal(61.90,57.00,
