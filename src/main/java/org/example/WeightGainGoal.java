@@ -3,9 +3,9 @@ package org.example;
 import java.util.Objects;
 
 public class WeightGainGoal extends Goal implements WeightChangeCalculator,BMRCalculator,CalorieCalculator{
-    public WeightGainGoal(double currentWeight, double targetWeight, double height,
+    public WeightGainGoal(double currentWeight, double height,
                           int durationInWeek, String exercisePlace) {
-        super(currentWeight, targetWeight, height, durationInWeek, exercisePlace);
+        super(currentWeight, height, durationInWeek, exercisePlace);
     }
 
     @Override

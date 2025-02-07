@@ -11,8 +11,7 @@ public class GoalTest {
     public void testSetDietPlanForWeightGain()
     {
         boolean expectedValue = true;
-        Goal weightGain = new WeightGainGoal(61.90,57.00,
-                155.58,12,"home");
+        Goal weightGain = new WeightGainGoal(61.90,155.58,12,"home");
         boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
         assertEquals(expectedValue,actualValue);
     }
@@ -21,8 +20,7 @@ public class GoalTest {
     public void testSetDietPlanForWeightLoss()
     {
         boolean expectedValue = true;
-        Goal weightGain = new WeightLossGoal(61.90,57.00,
-                155.58,12,"home");
+        Goal weightGain = new WeightLossGoal(61.90,155.58,12,"home");
         boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
         assertEquals(expectedValue,actualValue);
     }
@@ -31,8 +29,7 @@ public class GoalTest {
     public void testSetDietPlanForWeightMaintenance()
     {
         boolean expectedValue = true;
-        Goal weightGain = new WeightMaintenanceGoal(61.90,57.00,
-                155.58,12,"home");
+        Goal weightGain = new WeightMaintenanceGoal(61.90,155.58,12,"home");
         boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
         assertEquals(expectedValue,actualValue);
     }
