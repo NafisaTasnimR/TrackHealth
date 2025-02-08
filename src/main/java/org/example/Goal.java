@@ -21,10 +21,6 @@ public abstract class Goal {
         return currentWeight;
     }
 
-    public double getTargetWeight() {
-        return targetWeight;
-    }
-
     public double getHeight() {
         return height;
     }
