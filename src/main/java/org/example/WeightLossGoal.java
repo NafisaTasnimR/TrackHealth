@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Objects;
 
-public class WeightLossGoal extends Goal implements WeightChangeCalculator,BMRCalculator,CalorieCalculator{
+public class WeightLossGoal extends Goal implements WeightChangeCalculator,BMRCalculator,CalorieCalculator,BMICalculator{
     public WeightLossGoal(double currentWeight, double height, int durationInWeek,
                           String exercisePlace) {
         super(currentWeight, height,
@@ -21,6 +21,26 @@ public class WeightLossGoal extends Goal implements WeightChangeCalculator,BMRCa
         }
         weeklyWeightChange = getCurrentWeight()*weightChangeRation;
         return weeklyWeightChange;
+    }
+
+    @Override
+    public double calculateBMI(double currentWeight, double height) {
+        return (currentWeight/Math.sqrt((height/100)));
+    }
+
+    @Override
+    public String getWeightCategory(double BMI) {
+        if(BMI < 18.5)
+        {
+            return "BMI Category: Underweight";
+        } else if (BMI >= 18.5 && BMI <= 24.9) {
+            return "BMI Category: Normal";
+        } else if (BMI >= 25.00 && BMI <= 29.9) {
+            return "BMI Category: Overweight";
+        } else if (BMI >= 30.00) {
+            return "BMI Category: Obesity";
+        }
+        return null;
     }
 
     @Override
