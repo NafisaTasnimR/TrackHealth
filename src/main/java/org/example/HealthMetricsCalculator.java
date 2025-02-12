@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Objects;
 
-public class FitnessCalculator {
+public class HealthMetricsCalculator {
     public static double calculateBMI(double currentWeight, double height) {
         return (currentWeight/Math.sqrt((height/100)));
     }
