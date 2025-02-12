@@ -85,14 +85,16 @@ public class MealPlanService {
         double dinnerCalories = dailyCalorieNeed * dinnerRatio;
         double snackCalories = dailyCalorieNeed * snackRatio;
 
-        System.out.println("------------------------------------------------------------");
-        System.out.printf("Goal: %s%n", goalType);
-        System.out.printf("Total Daily Calorie Target: %.2f%n", dailyCalorieNeed);
-        System.out.println("------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------" +
+                "----------------");
+        System.out.printf("| %-22s  %-65.2f |\n", "Total Daily Calorie Target:", dailyCalorieNeed);
+        System.out.println("----------------------------------------------------------------------------------" +
+                "----------------");
 
         printMeal("Breakfast", getMealSuggestions("Breakfast"), breakfastCalories);
         printMeal("Lunch", getMealSuggestions("Lunch"), lunchCalories);
         printMeal("Dinner", getMealSuggestions("Dinner"), dinnerCalories);
-        printMeal("Snack", getMealSuggestions("Snack"), snackCalories);
+        printMeal("Mid-Morning Snack", getMealSuggestions("Mid-Morning Snack"), snackCalories);
+        printMeal("Afternoon Snack", getMealSuggestions("Afternoon Snack"), snackCalories);
     }
 }

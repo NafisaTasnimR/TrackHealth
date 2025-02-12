@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class HealthMetricsCalculator {
     public static double calculateBMI(double currentWeight, double height) {
-        return (currentWeight/Math.sqrt((height/100)));
+        return (currentWeight/Math.pow((height/100),2));
     }
 
     public static String getWeightCategory(double BMI) {
@@ -55,9 +55,9 @@ public class HealthMetricsCalculator {
     public static double calculateWeeklyWeightChange(double currentWeight, int durationInWeeks, String goalType) {
         double weightChangeRatio;
         if (durationInWeeks >= 12) {
-            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0025 : 0.0020; // Gain vs. Loss for long duration
+            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0025 : 0.0020;
         } else {
-            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0050 : 0.0040; // Gain vs. Loss for short duration
+            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0050 : 0.0040;
         }
         return currentWeight * weightChangeRatio;
     }

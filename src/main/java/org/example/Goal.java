@@ -17,7 +17,7 @@ public abstract class Goal {
         double bmi = HealthMetricsCalculator.calculateBMI(currentWeight, height);
         System.out.println("----------------------------------------------------------------------------------" +
                 "----------------");
-        System.out.printf("| %-94s |\n","Your BMI: " + bmi + " (" + HealthMetricsCalculator.getWeightCategory(bmi) + ")");
+        System.out.printf("| %-10s %-5.2f %-78s|\n","Your BMI: " , bmi , " (" + HealthMetricsCalculator.getWeightCategory(bmi) + ")");
         System.out.println("----------------------------------------------------------------------------------" +
                 "----------------");
 
