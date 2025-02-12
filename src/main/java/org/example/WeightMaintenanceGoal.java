@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Objects;
-
 public class WeightMaintenanceGoal extends Goal {
     public WeightMaintenanceGoal(double currentWeight, double height, int durationInWeek, String exercisePlace) {
         super(currentWeight, height, durationInWeek, exercisePlace);
