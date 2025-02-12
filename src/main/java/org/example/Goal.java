@@ -13,7 +13,22 @@ public abstract class Goal {
         this.exercisePlace = exercisePlace;
     }
 
-    public abstract boolean setDietPlan(String gender,int age,String activityLevel);
+    public boolean setDietPlan(String gender, int age, String activityLevel) {
+        double bmi = HealthMetricsCalculator.calculateBMI(currentWeight, height);
+        System.out.println("Your BMI: " + bmi + " (" + HealthMetricsCalculator.getWeightCategory(bmi) + ")");
+
+        double bmr = HealthMetricsCalculator.calculateBMR(currentWeight, height, age, gender);
+        double tdee = HealthMetricsCalculator.calculateTDEE(bmr, activityLevel);
+        double dailyCalorieNeed = adjustCalories(tdee);
+
+        // Delegate meal plan creation to MealPlanService
+        MealPlanService mealPlanService = createMealPlanService();
+        mealPlanService.generateMealPlan(dailyCalorieNeed);
+
+        return true;
+    }
+    protected abstract double adjustCalories(double tdee);
+    protected abstract MealPlanService createMealPlanService();
     public abstract String setWorkoutPlan();
     public abstract String trackProgress();
 
