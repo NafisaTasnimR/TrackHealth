@@ -51,4 +51,14 @@ public class HealthMetricsCalculator {
         }
         return BMR*activityFactor;
     }
+
+    public static double calculateWeeklyWeightChange(double currentWeight, int durationInWeeks, String goalType) {
+        double weightChangeRatio;
+        if (durationInWeeks >= 12) {
+            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0025 : 0.0020; // Gain vs. Loss for long duration
+        } else {
+            weightChangeRatio = Objects.equals(goalType,"WeightGain") ? 0.0050 : 0.0040; // Gain vs. Loss for short duration
+        }
+        return currentWeight * weightChangeRatio;
+    }
 }

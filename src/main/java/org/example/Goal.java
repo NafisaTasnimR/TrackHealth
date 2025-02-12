@@ -15,13 +15,16 @@ public abstract class Goal {
 
     public boolean setDietPlan(String gender, int age, String activityLevel) {
         double bmi = HealthMetricsCalculator.calculateBMI(currentWeight, height);
-        System.out.println("Your BMI: " + bmi + " (" + HealthMetricsCalculator.getWeightCategory(bmi) + ")");
+        System.out.println("----------------------------------------------------------------------------------" +
+                "----------------");
+        System.out.printf("| %-94s |\n","Your BMI: " + bmi + " (" + HealthMetricsCalculator.getWeightCategory(bmi) + ")");
+        System.out.println("----------------------------------------------------------------------------------" +
+                "----------------");
 
         double bmr = HealthMetricsCalculator.calculateBMR(currentWeight, height, age, gender);
         double tdee = HealthMetricsCalculator.calculateTDEE(bmr, activityLevel);
         double dailyCalorieNeed = adjustCalories(tdee);
 
-        // Delegate meal plan creation to MealPlanService
         MealPlanService mealPlanService = createMealPlanService();
         mealPlanService.generateMealPlan(dailyCalorieNeed);
 
