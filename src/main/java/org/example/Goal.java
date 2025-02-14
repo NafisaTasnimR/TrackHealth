@@ -30,9 +30,10 @@ public abstract class Goal {
 
         return true;
     }
+    public abstract String setWorkoutPlan();
     protected abstract double adjustCalories(double tdee);
     protected abstract MealPlanService createMealPlanService();
-    public abstract String setWorkoutPlan();
+    protected abstract WorkoutPlanService createWorkoutPlanService();
     public abstract String trackProgress();
 
     public double getCurrentWeight() {
