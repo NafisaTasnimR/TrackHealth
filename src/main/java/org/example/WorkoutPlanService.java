@@ -1,10 +1,10 @@
 package org.example;
 
-public class Workout {
+public class WorkoutPlanService {
     private String workoutPlace;
     private String goalType;
 
-    public Workout(String workoutPlace, String goalType) {
+    public WorkoutPlanService(String workoutPlace, String goalType) {
         this.workoutPlace = workoutPlace;
         this.goalType = goalType;
     }
