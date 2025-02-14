@@ -26,6 +26,7 @@ public class WeightGainGoal extends Goal {
 
     @Override
     public String setWorkoutPlan() {
+
         return null;
     }
 
