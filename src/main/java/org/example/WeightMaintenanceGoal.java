@@ -23,8 +23,8 @@ public class WeightMaintenanceGoal extends Goal {
     }
 
     @Override
-    public String setWorkoutPlan() {
-        return null;
+    protected WorkoutPlanService createWorkoutPlanService() {
+        return new WorkoutPlanService(getExercisePlace(),"weightMaintenance");
     }
 
     @Override

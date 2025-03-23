@@ -26,8 +26,8 @@ public class WeightLossGoal extends Goal {
     }
 
     @Override
-    public String setWorkoutPlan() {
-        return null;
+    protected WorkoutPlanService createWorkoutPlanService() {
+        return new WorkoutPlanService(getExercisePlace(),"weightLoss");
     }
 
     @Override
