@@ -33,4 +33,22 @@ public class GoalTest {
         boolean actualValue = weightGain.setDietPlan("female",21,"Light Activity");
         assertEquals(expectedValue,actualValue);
     }
+
+    @Test
+    public void testSetWorkOutPlanForWeightMaintenance()
+    {
+        boolean expectedValue = true;
+        Goal weightMaintenanceGoal = new WeightMaintenanceGoal(61.90,155.58,12,"home");
+        boolean actualValue = weightMaintenanceGoal.setWorkoutPlan();
+        assertEquals(expectedValue,actualValue);
+    }
+
+    @Test
+    public void testSetWorkOutPlanForWeightLoss()
+    {
+        boolean expectedValue = true;
+        Goal weightLossGoal = new WeightLossGoal(61.90,155.58,12,"gym");
+        boolean actualValue = weightLossGoal.setWorkoutPlan();
+        assertEquals(expectedValue,actualValue);
+    }
 }
