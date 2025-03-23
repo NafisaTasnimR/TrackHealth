@@ -18,17 +18,17 @@ public class WorkoutPlanService {
     }
 
     private void formatWorkoutPlan(String title, String[] workouts, String[] durations) {
-        System.out.println("------------------------------------------------------------\n");
-        System.out.printf("| %-50s |",title);
-        System.out.println("------------------------------------------------------------\n");
-        System.out.printf("| %-40s | %-10s |\n", "Workout", "Duration");
-        System.out.println("------------------------------------------------------------\n");
+        System.out.println("-----------------------------------------------------------------------------\n");
+        System.out.printf("| %-73s |\n",title);
+        System.out.println("-----------------------------------------------------------------------------\n");
+        System.out.printf("| %-60s | %-10s |\n", "Workout", "Duration");
+        System.out.println("-----------------------------------------------------------------------------\n");
 
         for (int i = 0; i < workouts.length; i++) {
-            System.out.printf("| %-40s | %-10s |\n", workouts[i], durations[i]);
+            System.out.printf("| %-60s | %-10s |\n", workouts[i], durations[i]);
+            System.out.println("-----------------------------------------------------------------------------\n");
         }
 
-        System.out.println("------------------------------------------------------------\n");
     }
 
     private void suggestHomeWorkout(String goalType){
@@ -43,6 +43,7 @@ public class WorkoutPlanService {
                                 "10 minutes","10 minutes"
                         }
                 );
+                break;
             case "weightLoss":
                 formatWorkoutPlan(
                         "Home Workout Plan for Weight Loss",
@@ -53,7 +54,8 @@ public class WorkoutPlanService {
                                 "10 minutes","20 minutes"
                         }
                 );
-            case "weightMaintain":
+                break;
+            case "weightMaintenance":
                 formatWorkoutPlan(
                         "Home Workout Plan for Weight Maintenance",
                         new String[]{
@@ -63,6 +65,7 @@ public class WorkoutPlanService {
                                 "10 minutes","20 minutes"
                         }
                 );
+                break;
             default:
                 System.out.println("Goal type not recognized for home workouts.");
         }
@@ -80,6 +83,7 @@ public class WorkoutPlanService {
                                 "10 minutes","10 minutes"
                         }
                 );
+                break;
             case "weightLoss":
                 formatWorkoutPlan(
                         "Gym Workout Plan for Weight Loss",
@@ -90,7 +94,8 @@ public class WorkoutPlanService {
                                 "10 minutes","20 minutes"
                         }
                 );
-            case "weightMaintain":
+                break;
+            case "weightMaintenance":
                 formatWorkoutPlan(
                         "Gym Workout Plan for Weight Maintenance",
                         new String[]{
@@ -106,10 +111,10 @@ public class WorkoutPlanService {
     }
 
     public void suggestWorkoutPlan() {
-        if (workoutPlace.equals("home")) {
-            suggestHomeWorkout(goalType);
-        } else if (workoutPlace.equals("gym")) {
-            suggestGymWorkout(goalType);
+        if (getWorkoutPlace().equals("home")) {
+            suggestHomeWorkout(getGoalType());
+        } else if (getWorkoutPlace().equals("gym")) {
+            suggestGymWorkout(getGoalType());
         } else {
             System.out.println("Workout place not recognized. Please choose 'home' or 'gym'.");
         }
