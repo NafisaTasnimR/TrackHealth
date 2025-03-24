@@ -1,7 +1,9 @@
 package org.example;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TrackerFileHandler {
     private String filePath;
@@ -29,12 +31,27 @@ public class TrackerFileHandler {
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts[0].equals(email)) {
-                    lastWeight = Double.parseDouble(parts[2]); 
+                    lastWeight = Double.parseDouble(parts[2]);
                 }
             }
         } catch (IOException e) {
             System.out.println("Error reading weight log.");
         }
         return lastWeight;
+    }
+    public List<String> getWeightHistory(String email) {
+        List<String> history = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(email)) {
+                    history.add(parts[1] + " - " + parts[2] + " kg");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error retrieving weight history.");
+        }
+        return history;
     }
 }
