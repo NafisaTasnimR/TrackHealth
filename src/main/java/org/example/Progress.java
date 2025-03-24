@@ -28,6 +28,9 @@ public class Progress {
     public int getGoalDurationDays() {
         return goalDurationDays;
     }
+    public void updateCurrentWeight(double weight) {
+        this.currentWeight = weight;
+    }
     public double calculateProgressPercentage() {
         if (initialWeight == targetWeight) {
             return 100.0;
@@ -35,5 +38,5 @@ public class Progress {
         double progress = 100 * Math.abs(currentWeight - initialWeight) / Math.abs(targetWeight - initialWeight);
         return Math.min(progress, 100.0);
     }
-    
+
 }
