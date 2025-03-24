@@ -58,4 +58,13 @@ public class Main {
     private static void registrationMenu(Scanner scanner) {
 
     }
+
+    private static void userMenu(Scanner scanner) {
+        System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
+        System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
+        System.out.println(" ".repeat(75) + "2. Watch Diet Plan According To Your Goal");
+        System.out.println(" ".repeat(75) + "3. Watch Workout Plan According To Your Goal");
+        System.out.println(" ".repeat(75) + "4. Watch Your Progress So Far");
+        System.out.println(" ".repeat(75) + "5. Logout");
+    }
 }
