@@ -42,7 +42,6 @@ public abstract class Goal {
     protected abstract double adjustCalories(double tdee);
     protected abstract MealPlanService createMealPlanService();
     protected abstract WorkoutPlanService createWorkoutPlanService();
-    public abstract String trackProgress();
 
     public double getCurrentWeight() {
         return currentWeight;
