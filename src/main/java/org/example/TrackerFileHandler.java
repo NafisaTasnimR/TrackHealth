@@ -16,7 +16,7 @@ public class TrackerFileHandler {
         return filePath;
     }
     public void saveWeight(String email, double weight) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(getFilePath(), true))) {
             String date = new Date().toString();
             writer.write(email + "," + date + "," + weight);
             writer.newLine();
@@ -26,7 +26,7 @@ public class TrackerFileHandler {
     }
     public double getLastLoggedWeight(String email) {
         double lastWeight = 0.0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -41,7 +41,7 @@ public class TrackerFileHandler {
     }
     public List<String> getWeightHistory(String email) {
         List<String> history = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(getFilePath()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
