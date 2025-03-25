@@ -29,9 +29,9 @@ public class NotificationService {
         }
     }
 
-    public void getProTip(String email, GoalFileHandler goalTracker) {
+    public void getProTipPerWeek(String email, GoalFileHandler goalTracker) {
         int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.txt");
-        if (daysPassed > 0 && daysPassed % 7 == 0) { // Check if a week has passed
+        if (daysPassed > 0 && daysPassed % 7 == 0) {
             int weekNumber = daysPassed / 7;
             List<String> proTips = readProTipsFromFile();
             if (weekNumber <= proTips.size()) {
