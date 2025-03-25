@@ -46,7 +46,7 @@ public class ProgressTracker {
         }
     }
 
-    public void showWeightHistory(String email) {
+    public boolean showWeightHistory(String email) {
         List<String> history = fileHandler.getWeightHistory(email);
         System.out.println("\nWeight History for " + email + ":");
         if (history.isEmpty()) {
@@ -55,7 +55,9 @@ public class ProgressTracker {
             for (String entry : history) {
                 System.out.println(entry);
             }
+            return true;
         }
+        return false;
     }
     public boolean isGoalAchieved() {
         return getProgress().calculateProgressPercentage() >= 100.0;
