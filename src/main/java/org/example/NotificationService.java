@@ -29,22 +29,13 @@ public class NotificationService {
         }
     }
 
-    public void getProTipPerWeek(String email, GoalFileHandler goalTracker) {
-        int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.csv");
-        if (daysPassed > 0 && daysPassed % 7 == 0) {
+    public void getProTip(String email, GoalFileHandler goalTracker) {
+        int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.txt");
+        if (daysPassed > 0 && daysPassed % 7 == 0) { // Check if a week has passed
             int weekNumber = daysPassed / 7;
-            try (BufferedReader reader = new BufferedReader(new FileReader("pro_tips.txt"))) {
-                String line;
-                int currentWeek = 1;
-                while ((line = reader.readLine()) != null) {
-                    if (currentWeek == weekNumber) {
-                        System.out.println("Pro Tip for Week " + weekNumber + ": " + line);
-                        break;
-                    }
-                    currentWeek++;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            List<String> proTips = readProTipsFromFile();
+            if (weekNumber <= proTips.size()) {
+                System.out.println("Pro Tip for Week " + weekNumber + ": " + proTips.get(weekNumber - 1));
             }
         }
     }
