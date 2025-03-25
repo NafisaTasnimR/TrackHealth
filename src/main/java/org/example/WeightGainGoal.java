@@ -28,9 +28,4 @@ public class WeightGainGoal extends Goal {
     protected WorkoutPlanService createWorkoutPlanService() {
         return new WorkoutPlanService(getExercisePlace(),"weightGain");
     }
-
-    @Override
-    public String trackProgress() {
-        return null;
-    }
 }
