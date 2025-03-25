@@ -15,10 +15,16 @@ public class ProgressTracker {
         return progress;
     }
 
-    public void logCurrentWeight(double weight,String email) {
-        getProgress().updateCurrentWeight(weight);
-        fileHandler.saveWeight(email, weight);
-        displayProgress(email);
+    public boolean logCurrentWeight(double weight,String email) {
+        if(progress != null) {
+            getProgress().updateCurrentWeight(weight);
+            fileHandler.saveWeight(email, weight);
+            displayProgress(email);
+            return true;
+        }else {
+            System.out.println("You Haven't Entered Any Of The Necessary Information!");
+        }
+        return false;
     }
 
     public void displayProgress(String email) {
@@ -32,9 +38,9 @@ public class ProgressTracker {
         System.out.println("Progress: " + String.format("%.2f", progressPercentage) + "%");
 
         if (distanceToGoal > 0) {
-            System.out.println("You need to lose " + distanceToGoal + " kg to reach your target.");
+            System.out.println("You need to gain " + distanceToGoal + " kg to reach your target.");
         } else if (distanceToGoal < 0) {
-            System.out.println("You need to gain " + Math.abs(distanceToGoal) + " kg to reach your target.");
+            System.out.println("You need to lose " + Math.abs(distanceToGoal) + " kg to reach your target.");
         } else {
             System.out.println("Congratulations! You have reached your target weight.");
         }
