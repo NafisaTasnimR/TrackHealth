@@ -1,5 +1,8 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class NotificationService {
@@ -9,7 +12,7 @@ public class NotificationService {
         }
     }
 
-    public void checkGoalCompletion(String email, GoalFileHandler goalTracker, String weightLogFile) {
+    public void checkGoalCompletion(String email, GoalFileHandler goalTracker) {
         String goalData = goalTracker.getGoalData(email);
         if (goalData == null) return;
 
@@ -21,6 +24,26 @@ public class NotificationService {
 
         if (!today.isBefore(endDate)) {
             System.out.println("Your goal duration has ended. Would you like to review your progress history? (Yes/No)");
+        }
+    }
+
+    public void getProTipPerWeek(String email, GoalFileHandler goalTracker) {
+        int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.csv");
+        if (daysPassed > 0 && daysPassed % 7 == 0) {
+            int weekNumber = daysPassed / 7;
+            try (BufferedReader reader = new BufferedReader(new FileReader("pro_tips.txt"))) {
+                String line;
+                int currentWeek = 1;
+                while ((line = reader.readLine()) != null) {
+                    if (currentWeek == weekNumber) {
+                        System.out.println("Pro Tip for Week " + weekNumber + ": " + line);
+                        break;
+                    }
+                    currentWeek++;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
