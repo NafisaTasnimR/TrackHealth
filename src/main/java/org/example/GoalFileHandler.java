@@ -51,6 +51,16 @@ public class GoalFileHandler {
         }
         return goalData;
     }
+    private void writeToFile(Map<String, String> goalData) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            for (String dataLine : goalData.values()) {
+                writer.write(dataLine);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
