@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NotificationService {
     public void showGoalReminder(String email, GoalFileHandler goalTracker) {
@@ -45,5 +47,18 @@ public class NotificationService {
                 e.printStackTrace();
             }
         }
+    }
+
+    private List<String> readProTipsFromFile() {
+        List<String> proTips = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("pro_tips.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                proTips.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return proTips;
     }
 }
