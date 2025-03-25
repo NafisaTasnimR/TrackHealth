@@ -61,6 +61,32 @@ public class GoalFileHandler {
             e.printStackTrace();
         }
     }
+    public void saveGoalData(String email, String goalType, String startDate, int durationDays) {
+        Map<String, String> goalData = loadGoalData();
+        String dataLine = email + "," + goalType + "," + startDate + "," + durationDays;
+        goalData.put(email, dataLine);
+        writeToFile(goalData);
+    }
+    public String getGoalData(String email) {
+        Map<String, String> goalData = loadGoalData();
+        return goalData.getOrDefault(email, null);
+    }
+    public int calculateDaysPassed(String email, String weightLogFile) {
+        String goalData = getGoalData(email);
+        if (goalData == null) {
+            return -1;
+        }
+
+        String[] parts = goalData.split(",");
+        LocalDate startDate = LocalDate.parse(parts[2]);
+        LocalDate lastLogDate = getLastLoggedDate(weightLogFile, email);
+
+        if (lastLogDate == null) {
+            return -1;
+        }
+
+        return (int) ChronoUnit.DAYS.between(startDate, lastLogDate);
+    }
 
 
 }
