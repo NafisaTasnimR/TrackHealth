@@ -32,5 +32,25 @@ public class GoalFileHandler {
         }
         return lastDate;
     }
+    private Map<String, String> loadGoalData() {
+        Map<String, String> goalData = new HashMap<>();
+        File file = new File(FILE_NAME);
+        if (!file.exists()) {
+            return goalData;
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    goalData.put(parts[0], line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return goalData;
+    }
+
 
 }
