@@ -1,8 +1,8 @@
 package org.example;
 
 public class WeightMaintenanceGoal extends Goal {
-    public WeightMaintenanceGoal(double currentWeight, double height, int durationInWeek, String exercisePlace) {
-        super(currentWeight, height, durationInWeek, exercisePlace);
+    public WeightMaintenanceGoal(GoalInformation goalInformation) {
+        super(goalInformation);
     }
 
     @Override
@@ -24,6 +24,6 @@ public class WeightMaintenanceGoal extends Goal {
 
     @Override
     protected WorkoutPlanService createWorkoutPlanService() {
-        return new WorkoutPlanService(getExercisePlace(),"weightMaintenance");
+        return new WorkoutPlanService(getGoalInformation().getExercisePlace(), "weightMaintenance");
     }
 }

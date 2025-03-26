@@ -1,9 +1,8 @@
 package org.example;
 
 public class WeightGainGoal extends Goal {
-    public WeightGainGoal(double currentWeight, double height,
-                          int durationInWeek, String exercisePlace) {
-        super(currentWeight, height, durationInWeek, exercisePlace);
+    public WeightGainGoal(GoalInformation goalInformation) {
+        super(goalInformation);
     }
 
     @Override
@@ -12,7 +11,7 @@ public class WeightGainGoal extends Goal {
                 "----------------");
         System.out.printf("| %-94s |\n","Your Weekly Weight Gain Target Is "
                 + HealthMetricsCalculator.calculateWeeklyWeightChange(
-                        getCurrentWeight(),getDurationInWeek(),"WeightGain") + "kg");
+                getGoalInformation().getCurrentWeight(), getGoalInformation().getDurationInWeek(), "WeightGain") + "kg");
         System.out.println("----------------------------------------------------------------------------------" +
                 "----------------");
         return tdee + 350;
@@ -26,6 +25,6 @@ public class WeightGainGoal extends Goal {
 
     @Override
     protected WorkoutPlanService createWorkoutPlanService() {
-        return new WorkoutPlanService(getExercisePlace(),"weightGain");
+        return new WorkoutPlanService(getGoalInformation().getExercisePlace(), "weightGain");
     }
 }
