@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -67,6 +69,7 @@ public class Main {
         while (isRunning) {
             NotificationService notificationService = new NotificationService();
             GoalFileHandler goalFileHandler = new GoalFileHandler();
+            Goal goal = null;
             System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
             notificationService.showGoalReminder(email,goalFileHandler);
             System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
@@ -78,11 +81,18 @@ public class Main {
             int caseValue = scanner.nextInt();
             switch (caseValue) {
                 case 1 -> {
-                    setFitnessGoalMenu(scanner,email);
+                    goal = setFitnessGoalMenu(scanner,email);
                     break;
                 }
                 case 2 -> {
-                    watchDietPlanMenu(scanner,email);
+                    if(goal != null) {
+                        watchDietPlanMenu(scanner, email,goal);
+                    } else {
+                        System.out.println(" ".repeat(50) + "You Have To Set Your Goal First. Steps To Set Goal: ");
+                        System.out.println(" ".repeat(50) + "1. Return To The User Menu");
+                        System.out.println(" ".repeat(50) + "2. Select Option (1) To Set Your Goal");
+                        System.out.println(" ".repeat(50) + "3. After Completing The Necessary Steps You Can View Your Diet Plan.");
+                    }
                     break;
                 }
                 case 3 -> {
@@ -99,17 +109,18 @@ public class Main {
         }
     }
 
-    private static void setFitnessGoalMenu(Scanner scanner, String email)
+    private static Goal setFitnessGoalMenu(Scanner scanner, String email)
     {
         System.out.println(" ".repeat(50) + "----------------Set Your Fitness Goal----------------");
-        takeInformationToSetGoal(scanner,email);
+        return takeInformationToSetGoal(scanner, email);
 
     }
 
-    private static void watchDietPlanMenu(Scanner scanner, String email)
+    private static void watchDietPlanMenu(Scanner scanner, String email,Goal goal)
     {
         System.out.println(" ".repeat(50) + "----------------Get Your Diet Chart----------------");
-
+        List<Object> userInformation = takeInformationToSetDietPlan(scanner,goal);
+        goal.setDietPlan((String) userInformation.get(0), (int) userInformation.get(1), (String) userInformation.get(2));
     }
     private static void watchWorkoutPlanMenu(Scanner scanner, String email)
     {
@@ -120,7 +131,7 @@ public class Main {
     {
         System.out.println(" ".repeat(50) + "----------------How Close Are You To Achieve Your Goal?----------------");
     }
-    private static void takeInformationToSetGoal(Scanner scanner,String email)
+    private static Goal takeInformationToSetGoal(Scanner scanner,String email)
     {
         System.out.println(" ".repeat(50) + "To Set Your Goal You Need To Enter Some Necessary Information First.");
         System.out.print(" ".repeat(60) + "Enter Your Current Weight: ");
@@ -142,7 +153,7 @@ public class Main {
         System.out.println(" ".repeat(65) + "3. Weight Maintenance");
         System.out.print(" ".repeat(60) + "Enter Your Selection: ");
         int choiceNumber = scanner.nextInt();
-        String goalType;
+        String goalType = null;
         switch (choiceNumber) {
             case 1 -> {
                 goalType = "weightGain";
@@ -163,6 +174,50 @@ public class Main {
         String startDate = scanner.nextLine();
         System.out.println(" ".repeat(50) + "Thank You For Entering All The Data!");
         System.out.println(" ".repeat(50) + "Tired??...Get Some Fresh Water! Water Keeps You Hydrated...");
+
+        GoalInformation goalInfo = new GoalInformation(currentWeight, targetWeight, heightInCm, timeDuration, durationInWeek,
+                exercisePlace, goalType, startDate, email);
+        GoalFileHandler goalFileHandler = new GoalFileHandler();
+        goalFileHandler.saveGoalData(goalInfo);
+        assert goalType != null;
+        return switch (goalType) {
+            case "weightGain" -> new WeightGainGoal(goalInfo);
+            case "weightLoss" -> new WeightLossGoal(goalInfo);
+            case "weightMaintenance" -> new WeightMaintenanceGoal(goalInfo);
+            default -> throw new IllegalStateException("Unexpected goal type: " + goalType);
+        };
+    }
+    private static List<Object> takeInformationToSetDietPlan(Scanner scanner, Goal goal) {
+        System.out.print(" ".repeat(50) + "Enter Your Gender (male/female): ");
+        String gender = scanner.nextLine().trim().toLowerCase();
+
+        System.out.print(" ".repeat(50) + "Enter Your Age: ");
+        int age = scanner.nextInt();
+
+        System.out.println(" ".repeat(50) + "Choose Your Activity Level: ");
+        System.out.println(" ".repeat(50) + "1. Sedentary");
+        System.out.println(" ".repeat(50) + "2. Light Activity");
+        System.out.println(" ".repeat(50) + "3. Moderate Activity");
+        System.out.println(" ".repeat(50) + "4. Very Active");
+        System.out.println(" ".repeat(50) + "5. Super Active");
+
+        System.out.print(" ".repeat(50) + "Enter Your Selected Activity Level (1-5): ");
+        int activityChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        String activityLevel = switch (activityChoice) {
+            case 1 -> "Sedentary";
+            case 2 -> "Light Activity";
+            case 3 -> "Moderate Activity";
+            case 4 -> "Very Active";
+            case 5 -> "Super Active";
+            default -> {
+                System.out.println("Invalid choice. Defaulting to Sedentary.");
+                yield "Sedentary";
+            }
+        };
+
+        return Arrays.asList(gender, age, activityLevel);
     }
 
 }
