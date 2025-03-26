@@ -42,7 +42,7 @@ public class GoalFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 4) {
+                if (parts.length == 9) {
                     goalData.put(parts[0], line);
                 }
             }
@@ -61,24 +61,49 @@ public class GoalFileHandler {
             e.printStackTrace();
         }
     }
-    public void saveGoalData(String email, String goalType, String startDate, int durationDays) {
+    public void saveGoalData(GoalInformation goalInfo) {
         Map<String, String> goalData = loadGoalData();
-        String dataLine = email + "," + goalType + "," + startDate + "," + durationDays;
-        goalData.put(email, dataLine);
+        String dataLine = String.join(",",
+                goalInfo.getEmail(),
+                goalInfo.getGoalType(),
+                goalInfo.getStartDate(),
+                String.valueOf(goalInfo.getTimeDuration()),
+                String.valueOf(goalInfo.getCurrentWeight()),
+                String.valueOf(goalInfo.getTargetWeight()),
+                String.valueOf(goalInfo.getHeightInCm()),
+                String.valueOf(goalInfo.getDurationInWeek()),
+                goalInfo.getExercisePlace()
+        );
+        goalData.put(goalInfo.getEmail(), dataLine);
         writeToFile(goalData);
     }
-    public String getGoalData(String email) {
+    public GoalInformation getGoalData(String email) {
         Map<String, String> goalData = loadGoalData();
-        return goalData.getOrDefault(email, null);
+        String dataLine = goalData.get(email);
+        if (dataLine == null) {
+            return null;
+        }
+
+        String[] parts = dataLine.split(",");
+        return new GoalInformation(
+                Double.parseDouble(parts[4]),
+                Double.parseDouble(parts[5]),
+                Double.parseDouble(parts[6]),
+                Integer.parseInt(parts[3]),
+                Integer.parseInt(parts[7]),
+                parts[8],
+                parts[1],
+                parts[2],
+                parts[0]
+        );
     }
     public int calculateDaysPassed(String email, String weightLogFile) {
-        String goalData = getGoalData(email);
-        if (goalData == null) {
+        GoalInformation goalInfo = getGoalData(email);
+        if (goalInfo == null) {
             return -1;
         }
 
-        String[] parts = goalData.split(",");
-        LocalDate startDate = LocalDate.parse(parts[2]);
+        LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
         LocalDate lastLogDate = getLastLoggedDate(weightLogFile, email);
 
         if (lastLogDate == null) {
