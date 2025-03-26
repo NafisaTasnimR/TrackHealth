@@ -65,50 +65,60 @@ public class Main {
 
     }
 
-    private static void userMenu(Scanner scanner,String email) {
+    private static void userMenu(Scanner scanner, String email) {
+        boolean isRunning = true;
+        NotificationService notificationService = new NotificationService();
+        GoalFileHandler goalFileHandler = new GoalFileHandler();
+        Goal goal = null; // Move it outside the loop
+
         while (isRunning) {
-            NotificationService notificationService = new NotificationService();
-            GoalFileHandler goalFileHandler = new GoalFileHandler();
-            Goal goal = null;
             System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
-            notificationService.showGoalReminder(email,goalFileHandler);
+            notificationService.showGoalReminder(email, goalFileHandler);
             System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
             System.out.println(" ".repeat(75) + "2. Watch Diet Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "3. Watch Workout Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "4. Watch Your Progress So Far");
             System.out.println(" ".repeat(75) + "5. Logout");
             System.out.print(" ".repeat(75) + "Enter Your Choice: ");
+
             int caseValue = scanner.nextInt();
+            scanner.nextLine();
+
             switch (caseValue) {
                 case 1 -> {
-                    goal = setFitnessGoalMenu(scanner,email);
-                    break;
+                    goal = setFitnessGoalMenu(scanner, email);
                 }
                 case 2 -> {
-                    if(goal != null) {
-                        watchDietPlanMenu(scanner, email,goal);
+                    if (goal != null) {
+                        watchDietPlanMenu(scanner, goal);
                     } else {
-                        System.out.println(" ".repeat(50) + "You Have To Set Your Goal First. Steps To Set Goal: ");
-                        System.out.println(" ".repeat(50) + "1. Return To The User Menu");
-                        System.out.println(" ".repeat(50) + "2. Select Option (1) To Set Your Goal");
-                        System.out.println(" ".repeat(50) + "3. After Completing The Necessary Steps You Can View Your Diet Plan.");
+                        showSetGoalReminder();
                     }
-                    break;
                 }
                 case 3 -> {
-                    watchWorkoutPlanMenu(scanner,email);
-                    break;
+                    if (goal != null) {
+                        watchWorkoutPlanMenu(scanner, goal);
+                    } else {
+                        showSetGoalReminder();
+                    }
                 }
                 case 4 -> {
-                    watchProgressSoFarMenu(scanner,email);
-                    break;
+                    watchProgressSoFarMenu(scanner, email);
                 }
-                case 5 -> logout();
+                case 5 -> {
+                    logout();
+                }
                 default -> System.out.println(" ".repeat(50) + "Invalid choice!! Try Again");
             }
         }
     }
 
+    private static void showSetGoalReminder() {
+        System.out.println(" ".repeat(50) + "You Have To Set Your Goal First.");
+        System.out.println(" ".repeat(50) + "1. Return To The User Menu");
+        System.out.println(" ".repeat(50) + "2. Select Option (1) To Set Your Goal");
+        System.out.println(" ".repeat(50) + "3. After Completing The Necessary Steps You Can View Your Diet Plan.");
+    }
     private static Goal setFitnessGoalMenu(Scanner scanner, String email)
     {
         System.out.println(" ".repeat(50) + "----------------Set Your Fitness Goal----------------");
@@ -116,21 +126,56 @@ public class Main {
 
     }
 
-    private static void watchDietPlanMenu(Scanner scanner, String email,Goal goal)
+    private static void watchDietPlanMenu(Scanner scanner, Goal goal)
     {
         System.out.println(" ".repeat(50) + "----------------Get Your Diet Chart----------------");
         List<Object> userInformation = takeInformationToSetDietPlan(scanner,goal);
         goal.setDietPlan((String) userInformation.get(0), (int) userInformation.get(1), (String) userInformation.get(2));
     }
-    private static void watchWorkoutPlanMenu(Scanner scanner, String email)
+    private static void watchWorkoutPlanMenu(Scanner scanner, Goal goal)
     {
         System.out.println(" ".repeat(50) + "----------------Get some Workout Advice----------------");
-
+        goal.setWorkoutPlan();
     }
-    private static void watchProgressSoFarMenu(Scanner scanner, String email)
-    {
+    private static void watchProgressSoFarMenu(Scanner scanner, String email) {
         System.out.println(" ".repeat(50) + "----------------How Close Are You To Achieve Your Goal?----------------");
+        System.out.println(" ".repeat(50) + "1. Log Your Weight Today");
+        System.out.println(" ".repeat(50) + "2. View Your Progress History");
+        System.out.println(" ".repeat(50) + "3. Go Back");
+        System.out.print(" ".repeat(50) + "Enter your choice: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        GoalFileHandler goalFileHandler = new GoalFileHandler();
+        GoalInformation goalInfo = goalFileHandler.getGoalData(email);
+        ProgressTracker progressTracker = new ProgressTracker();
+
+        switch (choice) {
+            case 1:
+                double currentWeight = takeInputForProgressTracking(scanner);
+                Progress progress = new Progress(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
+
+                if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
+                    System.out.println(" ".repeat(50) + "Weight logged successfully!");
+                } else {
+                    System.out.println(" ".repeat(50) + "Failed to log weight.");
+                }
+                break;
+
+            case 2:
+                progressTracker.showWeightHistory(email);
+                break;
+
+            case 3:
+                System.out.println(" ".repeat(50) + "Returning to the previous menu...");
+                return;
+
+            default:
+                System.out.println(" ".repeat(50) + "Invalid choice. Please select a valid option.");
+        }
     }
+
     private static Goal takeInformationToSetGoal(Scanner scanner,String email)
     {
         System.out.println(" ".repeat(50) + "To Set Your Goal You Need To Enter Some Necessary Information First.");
@@ -169,7 +214,7 @@ public class Main {
             }
             default -> System.out.println("Invalid Choice!!");
         }
-        System.out.print(" ".repeat(60) + "Enter Your Starting Date(dd/mm/yyyy): ");
+        System.out.print(" ".repeat(60) + "Enter Your Starting Date(yyyy-mm-dd): ");
         scanner.nextLine();
         String startDate = scanner.nextLine();
         System.out.println(" ".repeat(50) + "Thank You For Entering All The Data!");
@@ -218,6 +263,10 @@ public class Main {
         };
 
         return Arrays.asList(gender, age, activityLevel);
+    }
+    private static double takeInputForProgressTracking(Scanner scanner) {
+        System.out.print(" ".repeat(50) + "Enter Your Current Weight: ");
+        return scanner.nextDouble();
     }
 
 }
