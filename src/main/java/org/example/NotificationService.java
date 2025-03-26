@@ -15,12 +15,11 @@ public class NotificationService {
     }
 
     public void checkGoalCompletion(String email, GoalFileHandler goalTracker) {
-        String goalData = goalTracker.getGoalData(email);
-        if (goalData == null) return;
+        GoalInformation goalInfo = goalTracker.getGoalData(email);
+        if (goalInfo == null) return;
 
-        String[] parts = goalData.split(",");
-        LocalDate startDate = LocalDate.parse(parts[2]);
-        int durationDays = Integer.parseInt(parts[3]);
+        LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
+        int durationDays = goalInfo.getTimeDuration();
         LocalDate endDate = startDate.plusDays(durationDays);
         LocalDate today = LocalDate.now();
 
@@ -28,7 +27,6 @@ public class NotificationService {
             System.out.println("Your goal duration has ended. Would you like to review your progress history? (Yes/No)");
         }
     }
-
     public void getProTipPerWeek(String email, GoalFileHandler goalTracker) {
         int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.txt");
         if (daysPassed > 0 && daysPassed % 7 == 0) {
