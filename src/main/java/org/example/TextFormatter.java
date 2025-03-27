@@ -50,16 +50,16 @@ public class TextFormatter {
         }
     }
     public static void displayProgress(ProgressCalculator progress, String email, double progressPercentage, double distanceToGoal) {
-        String BORDER = " ".repeat(50) + "----------------------------------------";
+        String BORDER = " ".repeat(50) + "+---------------------------------------------------+";
 
         System.out.println(BORDER);
-        System.out.println(" ".repeat(50) + String.format("| %-36s |", "User Progress Summary"));
+        System.out.println(" ".repeat(50) + String.format("| %-49s |", "             User Progress Summary"));
         System.out.println(BORDER);
-        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12s |", "User", email));
-        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Initial Weight", progress.getInitialWeight()));
-        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Current Weight", progress.getCurrentWeight()));
-        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Target Weight", progress.getTargetWeight()));
-        System.out.println(" ".repeat(50) + String.format("| %-20s : %-11.2f%% |", "Progress", progressPercentage));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-26s |", "User", email));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-26.2f |", "Initial Weight", progress.getInitialWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-26.2f |", "Current Weight", progress.getCurrentWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-26.2f |", "Target Weight", progress.getTargetWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-25.2f%% |", "Progress", progressPercentage));
 
         System.out.println(BORDER);
 
@@ -72,7 +72,7 @@ public class TextFormatter {
             message = "Congratulations! You have reached your target weight.";
         }
 
-        System.out.println(" ".repeat(50) + String.format("| %-36s |", message));
+        System.out.println(" ".repeat(50) + String.format("| %-49s |", message));
         System.out.println(BORDER);
     }
     public static void displayWeightHistory(String email, List<String> history) {
