@@ -1,12 +1,12 @@
 package org.example;
 
-public class Progress {
+public class ProgressCalculator {
     private double initialWeight;
     private double targetWeight;
     private double currentWeight;
     private int goalDurationDays;
 
-    public Progress(double initialWeight, double targetWeight, double currentWeight, int goalDurationDays) {
+    public ProgressCalculator(double initialWeight, double targetWeight, double currentWeight, int goalDurationDays) {
         this.initialWeight = initialWeight;
         this.targetWeight = targetWeight;
         this.currentWeight = currentWeight;

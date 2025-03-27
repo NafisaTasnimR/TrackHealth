@@ -123,7 +123,7 @@ public class Main {
             }
         }
 
-        while (isRunning) {
+        while (true) {
             System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
             notificationService.showGoalReminder(email);
             notificationService.getProTipPerWeek(email);
@@ -152,36 +152,32 @@ public class Main {
                         watchDietPlanMenu(scanner, goal);
                         handleUserNavigation(scanner);
                     } else {
-                        showSetGoalReminder();
+                        showSetGoalReminder(scanner);
                     }
                 }
                 case 3 -> {
                     if (goal != null) {
-                        watchWorkoutPlanMenu(scanner, goal);
+                        watchWorkoutPlanMenu(goal);
                         handleUserNavigation(scanner);
                     } else {
-                        showSetGoalReminder();
+                        showSetGoalReminder(scanner);
                     }
                 }
-                case 4 -> {
-                    watchProgressSoFarMenu(scanner, email);
-                }
-                case 5 -> {
-                    calculateBMIMenu(scanner,email);
-                }
-                case 6 -> {
-                    logout();
-                }
+                case 4 -> watchProgressSoFarMenu(scanner, email);
+                case 5 -> calculateBMIMenu(scanner);
+                case 6 -> logout();
                 default -> System.out.println(" ".repeat(50) + "Invalid choice!! Try Again");
             }
         }
     }
 
-    private static void showSetGoalReminder() {
-        System.out.println(" ".repeat(50) + "You Have To Set Your Goal First.");
-        System.out.println(" ".repeat(50) + "1. Return To The User Menu");
-        System.out.println(" ".repeat(50) + "2. Select Option (1) To Set Your Goal");
-        System.out.println(" ".repeat(50) + "3. After Completing The Necessary Steps You Can View Your Diet Plan.");
+    private static void showSetGoalReminder(Scanner scanner) {
+        System.out.println(" ".repeat(75) + "You Have To Set Your Goal First.");
+        System.out.println(" ".repeat(75) + "1. Return To The User Menu");
+        System.out.println(" ".repeat(75) + "2. Select Option (1) To Set Your Goal");
+        System.out.println(" ".repeat(75) + "3. After Completing The Necessary Steps You Can View Your Diet Plan.");
+        System.out.print(" ".repeat(75) + "Press Any Key To Return To The Previous Menu: ");
+        scanner.nextLine();
     }
 
     private static Goal setFitnessGoalMenu(Scanner scanner, String email) {
@@ -214,9 +210,7 @@ public class Main {
                         System.out.println(" ".repeat(50) + "Returning to the previous menu...");
                         return null;
                     }
-                    case 3 -> {
-                        logout();
-                    }
+                    case 3 -> logout();
                     default -> System.out.println(" ".repeat(50) + "Invalid choice! Please enter 1, 2, or 3.");
                 }
             }
@@ -226,11 +220,11 @@ public class Main {
 
     private static void watchDietPlanMenu(Scanner scanner, Goal goal) {
         System.out.println(" ".repeat(50) + "----------------Get Your Diet Chart----------------");
-        List<Object> userInformation = takeInformationToSetDietPlan(scanner, goal);
+        List<Object> userInformation = takeInformationToSetDietPlan(scanner);
         goal.setDietPlan((String) userInformation.get(0), (int) userInformation.get(1), (String) userInformation.get(2));
     }
 
-    private static void watchWorkoutPlanMenu(Scanner scanner, Goal goal) {
+    private static void watchWorkoutPlanMenu(Goal goal) {
         System.out.println(" ".repeat(50) + "----------------Get some Workout Advice----------------");
         goal.setWorkoutPlan();
     }
@@ -253,13 +247,18 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    double currentWeight = getCurrentWeight(scanner);
-                    Progress progress = new Progress(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
+                    TrackerFileHandler trackerFileHandler = new TrackerFileHandler("weight_log.csv");
+                    if(!trackerFileHandler.hasLoggedWeightToday(email)) {
+                        double currentWeight = getCurrentWeight(scanner);
+                        ProgressCalculator progress = new ProgressCalculator(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
 
-                    if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
-                        System.out.println(" ".repeat(50) + "Weight logged successfully!");
+                        if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
+                            System.out.println(" ".repeat(50) + "Weight logged successfully!");
+                        } else {
+                            System.out.println(" ".repeat(50) + "Failed to log weight.");
+                        }
                     } else {
-                        System.out.println(" ".repeat(50) + "Failed to log weight.");
+                        System.out.println(" ".repeat(50) + "You have already logged your weight for today.");
                     }
                     handleUserNavigation(scanner);
                     break;
@@ -277,10 +276,10 @@ public class Main {
             }
         }
     }
-    private static void calculateBMIMenu(Scanner scanner,String email) {
+    private static void calculateBMIMenu(Scanner scanner) {
         System.out.println(" ".repeat(50) + "----------------BMI Calculator----------------");
         double currentWeight = getCurrentWeight(scanner);
-        System.out.print(" ".repeat(50) + "Enter Your Current Height(cm): ");
+        System.out.print(" ".repeat(60) + "Enter Your Current Height(cm): ");
         double height = scanner.nextDouble();
         displayBMIAndCategory(currentWeight, height);
         scanner.nextLine();
@@ -355,10 +354,10 @@ public class Main {
         return null;
     }
 
-    private static List<Object> takeInformationToSetDietPlan(Scanner scanner, Goal goal) {
+    private static List<Object> takeInformationToSetDietPlan(Scanner scanner) {
         String gender;
         while (true) {
-            System.out.print(" ".repeat(50) + "Enter Your Gender (male/female): ");
+            System.out.print(" ".repeat(60) + "Enter Your Gender (male/female): ");
             gender = scanner.nextLine().trim().toLowerCase();
 
             if (gender.equals("male") || gender.equals("female")) {
@@ -370,7 +369,7 @@ public class Main {
 
         int age;
         while (true) {
-            System.out.print(" ".repeat(50) + "Enter Your Age: ");
+            System.out.print(" ".repeat(60) + "Enter Your Age: ");
             if (scanner.hasNextInt()) {
                 age = scanner.nextInt();
                 scanner.nextLine();
@@ -382,12 +381,12 @@ public class Main {
             scanner.nextLine();
         }
 
-        System.out.println(" ".repeat(50) + "Choose Your Activity Level: ");
-        System.out.println(" ".repeat(50) + "1. Sedentary");
-        System.out.println(" ".repeat(50) + "2. Light Activity");
-        System.out.println(" ".repeat(50) + "3. Moderate Activity");
-        System.out.println(" ".repeat(50) + "4. Very Active");
-        System.out.println(" ".repeat(50) + "5. Super Active");
+        System.out.println(" ".repeat(60) + "Choose Your Activity Level: ");
+        System.out.println(" ".repeat(65) + "1. Sedentary");
+        System.out.println(" ".repeat(65) + "2. Light Activity");
+        System.out.println(" ".repeat(65) + "3. Moderate Activity");
+        System.out.println(" ".repeat(65) + "4. Very Active");
+        System.out.println(" ".repeat(65) + "5. Super Active");
 
         int activityChoice;
         while (true) {
@@ -404,7 +403,6 @@ public class Main {
         }
 
         String activityLevel = switch (activityChoice) {
-            case 1 -> "Sedentary";
             case 2 -> "Light Activity";
             case 3 -> "Moderate Activity";
             case 4 -> "Very Active";
@@ -416,14 +414,14 @@ public class Main {
     }
 
     private static double getCurrentWeight(Scanner scanner) {
-        System.out.print(" ".repeat(50) + "Enter Your Current Weight: ");
+        System.out.print(" ".repeat(60) + "Enter Your Current Weight: ");
         return scanner.nextDouble();
     }
 
     private static void handleUserNavigation(Scanner scanner) {
-        System.out.println(" ".repeat(50) + "1. Go Back");
-        System.out.println(" ".repeat(50) + "2. Log Out");
-        System.out.print(" ".repeat(50) + "Enter your choice: ");
+        System.out.println(" ".repeat(75) + "1. Go Back");
+        System.out.println(" ".repeat(75) + "2. Log Out");
+        System.out.print(" ".repeat(75) + "Enter your choice: ");
 
         int choice = scanner.nextInt();
         switch (choice) {

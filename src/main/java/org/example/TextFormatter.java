@@ -1,8 +1,9 @@
 package org.example;
 
+import java.util.List;
 import java.util.Objects;
 
-public class PlanFormatter {
+public class TextFormatter {
     public static void displayBMI(double bmi) {
         System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
                 "----------------");
@@ -47,6 +48,50 @@ public class PlanFormatter {
             System.out.printf(" ".repeat(50) + "| %-60s | %-10s |\n", workouts[i], durations[i]);
             System.out.println(" ".repeat(50) + "-----------------------------------------------------------------------------");
         }
+    }
+    public static void displayProgress(ProgressCalculator progress, String email, double progressPercentage, double distanceToGoal) {
+        String BORDER = " ".repeat(50) + "----------------------------------------";
 
+        System.out.println(BORDER);
+        System.out.println(" ".repeat(50) + String.format("| %-36s |", "User Progress Summary"));
+        System.out.println(BORDER);
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12s |", "User", email));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Initial Weight", progress.getInitialWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Current Weight", progress.getCurrentWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-12.2f |", "Target Weight", progress.getTargetWeight()));
+        System.out.println(" ".repeat(50) + String.format("| %-20s : %-11.2f%% |", "Progress", progressPercentage));
+
+        System.out.println(BORDER);
+
+        String message;
+        if (distanceToGoal > 0) {
+            message = "You need to gain " + distanceToGoal + " kg to reach your target.";
+        } else if (distanceToGoal < 0) {
+            message = "You need to lose " + Math.abs(distanceToGoal) + " kg to reach your target.";
+        } else {
+            message = "Congratulations! You have reached your target weight.";
+        }
+
+        System.out.println(" ".repeat(50) + String.format("| %-36s |", message));
+        System.out.println(BORDER);
+    }
+    public static void displayWeightHistory(String email, List<String> history) {
+        String BORDER = " ".repeat(50) + "+------------------------------------------+";
+        System.out.println(BORDER);
+        System.out.printf(" ".repeat(50) + "| %-40s |%n","            Weight History");
+        System.out.println(BORDER);
+        System.out.printf(" ".repeat(50) + "| %-40s |%n"," User: " + email );
+        System.out.println(BORDER);
+
+        if (history.isEmpty()) {
+            System.out.printf(" ".repeat(50) + "| %-40s |%n","  No weight history found. ");
+        } else {
+            System.out.printf(" ".repeat(50) + "| %-10s | %-27s |%n", "Date", "Weight (kg)");
+            System.out.println(BORDER);
+            for (String entry : history) {
+                System.out.printf(" ".repeat(50) +"| %-40s |%n",entry);
+                System.out.println(BORDER);
+            }
+        }
     }
 }
