@@ -22,10 +22,11 @@ public class NotificationService {
         }
     }
 
-    public void checkGoalCompletion(String email) {
+    public boolean checkGoalCompletion(String email) {
         if (goalTracker.isGoalCompleted(email)) {
-            System.out.println("Your goal duration has ended. Would you like to review your progress history? (Yes/No)");
+            System.out.println("Your goal duration has ended!");
         }
+        return goalTracker.isGoalCompleted(email);
     }
 
     public void getProTipPerWeek(String email) {
