@@ -8,15 +8,13 @@ public class AuthenticationService {
         this.userRepository = userRepository;
     }
 
-    public boolean register(String userId, String name, int age,
-                            String gender, String email, String password)
+    public boolean register(User user)
     {
-        List<User> users = userRepository.findUser(email);
+        List<User> users = userRepository.findUser(user.getEmail());
         if (!users.isEmpty()) {
             System.out.println("An user with this email already exists!");
             return false;
         } else {
-            User user = new User(userId,name,age,gender,email,password);
             userRepository.addUser(user);
             System.out.println("Registration successful!");
             return true;
