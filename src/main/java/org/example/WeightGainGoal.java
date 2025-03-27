@@ -9,12 +9,12 @@ public class WeightGainGoal extends Goal {
 
     @Override
     protected double adjustCalories(double tdee) {
-        System.out.println("----------------------------------------------------------------------------------" +
+        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
                 "----------------");
-        System.out.printf("| %-94s |\n","Your Weekly Weight Gain Target Is "
+        System.out.printf(" ".repeat(50) + "| %-94s |\n","Your Weekly Weight Gain Target Is "
                 + HealthMetricsCalculator.calculateWeeklyWeightChange(
                 getGoalInformation().getCurrentWeight(), getGoalInformation().getDurationInWeek(), "WeightGain") + "kg");
-        System.out.println("----------------------------------------------------------------------------------" +
+        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
                 "----------------");
         return tdee + 350;
     }

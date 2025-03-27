@@ -6,10 +6,10 @@ public class WeightLossHomeWorkoutPlan implements WorkoutPlan {
         PlanFormatter.formatWorkoutPlan(
                 "Home Workout Plan for Weight Loss",
                 new String[]{
-                        "Warm-up: Light treadmill or cycling",
-                        "Strength: Bench Press, Deadlift, Burpee, Squat jump"
+                        "Warm-up: Light treadmill, cycling, walking",
+                        "Strength: Jump Rope, Burpee, Crunches, Lunge"
                 },new String[]{
-                        "10 minutes","20 minutes"
+                        "10 minutes","25 minutes"
                 }
         );
     }

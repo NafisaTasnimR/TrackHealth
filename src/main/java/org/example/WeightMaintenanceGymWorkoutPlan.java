@@ -9,7 +9,7 @@ public class WeightMaintenanceGymWorkoutPlan implements WorkoutPlan {
                         "Warm-up: Light treadmill or cycling",
                         "Strength: Bench Press, Deadlift, Burpee, Squat jump"
                 },new String[]{
-                        "10 minutes","20 minutes"
+                        "10 minutes","10 minutes"
                 }
         );
     }
