@@ -66,8 +66,41 @@ public class Main {
 
     private static void registrationMenu(Scanner scanner) {
         scanner.nextLine();
-        System.out.print(" ".repeat(75) + "Enter Your Email: ");
+        System.out.print(" ".repeat(75) + "Enter Your Name: ");
+        String name = scanner.nextLine();
+        System.out.println();
+        System.out.print(" ".repeat(75) + "Enter Your Age: ");
+        int age = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print(" ".repeat(75) + "Enter Your Gender(male/female): ");
+        String gender = scanner.nextLine();
+        String email = "";
+        boolean validEmail = false;
+        while (!validEmail) {
+            System.out.print(" ".repeat(75) + "Enter Your Email: ");
+            email = scanner.nextLine();
 
+            if (Utility.isValidEmail(email)) {
+                validEmail = true;
+            } else {
+                System.out.println(" ".repeat(75) + "Invalid email format! Please enter a valid email.");
+            }
+        }
+        scanner.nextLine();
+        System.out.print(" ".repeat(75) + "Enter Your Password: ");
+        String password = scanner.nextLine();
+        String userId = Utility.generateId();
+        User user = new User(userId,name,age,gender, email, password);
+        UserRepository userRepository = new CSVUserRepository();
+        AuthenticationService authenticationService = new AuthenticationService(userRepository);
+        if(authenticationService.register(user)) {
+            System.out.println(" ".repeat(75) + "Registration Successful!!");
+        }
+        else {
+            System.out.println(" ".repeat(75) + "Registration Failed!!");
+        }
+        System.out.print(" ".repeat(75) + "Press any key to return to the previous menu: ");
+        scanner.nextLine();
     }
 
     private static void userMenu(Scanner scanner, String email) {
