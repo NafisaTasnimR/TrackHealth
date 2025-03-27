@@ -105,8 +105,10 @@ public class Main {
 
     private static void userMenu(Scanner scanner, String email) {
         boolean isRunning = true;
-        NotificationService notificationService = new NotificationService();
         GoalFileHandler goalFileHandler = new GoalFileHandler();
+        GoalTracker goalTracker = new GoalTracker(goalFileHandler);
+        HealthTipService healthTipService = new HealthTipService();
+        NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
         Goal goal;
         GoalInformation goalInformation = goalFileHandler.getGoalData(email);
         String goalType = goalInformation.getGoalType();
@@ -123,7 +125,8 @@ public class Main {
 
         while (isRunning) {
             System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
-            notificationService.showGoalReminder(email, goalFileHandler);
+            notificationService.showGoalReminder(email);
+            notificationService.getProTipPerWeek(email);
             System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
             System.out.println(" ".repeat(75) + "2. Watch Diet Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "3. Watch Workout Plan According To Your Goal");
