@@ -128,7 +128,8 @@ public class Main {
             System.out.println(" ".repeat(75) + "2. Watch Diet Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "3. Watch Workout Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "4. Watch Your Progress So Far");
-            System.out.println(" ".repeat(75) + "5. Logout");
+            System.out.println(" ".repeat(75) + "5. Calculate Your BMI");
+            System.out.println(" ".repeat(75) + "6. Logout");
             System.out.print(" ".repeat(75) + "Enter Your Choice: ");
 
             int caseValue = scanner.nextInt();
@@ -163,6 +164,9 @@ public class Main {
                     watchProgressSoFarMenu(scanner, email);
                 }
                 case 5 -> {
+                    calculateBMIMenu(scanner,email);
+                }
+                case 6 -> {
                     logout();
                 }
                 default -> System.out.println(" ".repeat(50) + "Invalid choice!! Try Again");
@@ -217,8 +221,6 @@ public class Main {
         return null;
     }
 
-
-
     private static void watchDietPlanMenu(Scanner scanner, Goal goal) {
         System.out.println(" ".repeat(50) + "----------------Get Your Diet Chart----------------");
         List<Object> userInformation = takeInformationToSetDietPlan(scanner, goal);
@@ -248,7 +250,7 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    double currentWeight = takeInputForProgressTracking(scanner);
+                    double currentWeight = getCurrentWeight(scanner);
                     Progress progress = new Progress(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
 
                     if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
@@ -272,7 +274,24 @@ public class Main {
             }
         }
     }
+    private static void calculateBMIMenu(Scanner scanner,String email) {
+        System.out.println(" ".repeat(50) + "----------------BMI Calculator----------------");
+        double currentWeight = getCurrentWeight(scanner);
+        System.out.print(" ".repeat(50) + "Enter Your Current Height(cm): ");
+        double height = scanner.nextDouble();
+        displayBMIAndCategory(currentWeight, height);
+        scanner.nextLine();
+        System.out.print(" ".repeat(50) + "Press any key to return to the previous menu:");
+        scanner.nextLine();
+    }
+    private static void displayBMIAndCategory(double currentWeight,double height) {
+        double bmiValue = HealthMetricsCalculator.calculateBMI(currentWeight,height);
+        String bmiCategory = HealthMetricsCalculator.getWeightCategory(bmiValue);
 
+        System.out.println("\n" + " ".repeat(50) + "+----------------------------------------------------------------------------------+");
+        System.out.printf(" ".repeat(50) + "| %-10s %-5.2f %-64s|\n","Your BMI: " , bmiValue , " (" + bmiCategory + ")");
+        System.out.println(" ".repeat(50) + "+----------------------------------------------------------------------------------+");
+    }
     private static Goal takeInformationToSetGoal(Scanner scanner, String email) {
         while (isRunning) {
             System.out.println(" ".repeat(50) + "To Set Your Goal You Need To Enter Some Necessary Information First.");
@@ -395,7 +414,7 @@ public class Main {
     }
 
 
-    private static double takeInputForProgressTracking(Scanner scanner) {
+    private static double getCurrentWeight(Scanner scanner) {
         System.out.print(" ".repeat(50) + "Enter Your Current Weight: ");
         return scanner.nextDouble();
     }
