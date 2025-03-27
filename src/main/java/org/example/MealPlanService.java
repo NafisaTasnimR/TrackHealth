@@ -21,11 +21,11 @@ public class MealPlanService {
         double dinnerCalories = dailyCalorieNeed * dinnerRatio;
         double snackCalories = dailyCalorieNeed * snackRatio;
 
-        PlanFormatter.printHeader(dailyCalorieNeed);
-        PlanFormatter.printMealPlan("Breakfast", mealPlanStrategy.getMealSuggestions("Breakfast"), breakfastCalories);
-        PlanFormatter.printMealPlan("Lunch", mealPlanStrategy.getMealSuggestions("Lunch"), lunchCalories);
-        PlanFormatter.printMealPlan("Dinner", mealPlanStrategy.getMealSuggestions("Dinner"), dinnerCalories);
-        PlanFormatter.printMealPlan("Mid-Morning Snack", mealPlanStrategy.getMealSuggestions("Mid-Morning Snack"), snackCalories);
-        PlanFormatter.printMealPlan("Afternoon Snack", mealPlanStrategy.getMealSuggestions("Afternoon Snack"), snackCalories);
+        TextFormatter.printHeader(dailyCalorieNeed);
+        TextFormatter.printMealPlan("Breakfast", mealPlanStrategy.getMealSuggestions("Breakfast"), breakfastCalories);
+        TextFormatter.printMealPlan("Lunch", mealPlanStrategy.getMealSuggestions("Lunch"), lunchCalories);
+        TextFormatter.printMealPlan("Dinner", mealPlanStrategy.getMealSuggestions("Dinner"), dinnerCalories);
+        TextFormatter.printMealPlan("Mid-Morning Snack", mealPlanStrategy.getMealSuggestions("Mid-Morning Snack"), snackCalories);
+        TextFormatter.printMealPlan("Afternoon Snack", mealPlanStrategy.getMealSuggestions("Afternoon Snack"), snackCalories);
     }
 }

@@ -9,7 +9,7 @@ public abstract class Goal {
 
     public boolean setDietPlan(String gender, int age, String activityLevel) {
         double bmi = HealthMetricsCalculator.calculateBMI(getGoalInformation().getCurrentWeight(), getGoalInformation().getHeightInCm());
-        PlanFormatter.displayBMI(bmi);
+        TextFormatter.displayBMI(bmi);
 
         double bmr = HealthMetricsCalculator.calculateBMR(getGoalInformation().getCurrentWeight(), getGoalInformation().getHeightInCm(), age, gender);
         double tdee = HealthMetricsCalculator.calculateTDEE(bmr, activityLevel);

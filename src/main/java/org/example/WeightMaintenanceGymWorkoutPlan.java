@@ -3,7 +3,7 @@ package org.example;
 public class WeightMaintenanceGymWorkoutPlan implements WorkoutPlan {
     @Override
     public void suggestWorkoutPlan() {
-        PlanFormatter.formatWorkoutPlan(
+        TextFormatter.formatWorkoutPlan(
                 "Gym Workout Plan for Weight Maintenance",
                 new String[]{
                         "Warm-up: Light treadmill or cycling",
