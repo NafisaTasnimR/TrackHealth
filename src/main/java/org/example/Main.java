@@ -352,7 +352,6 @@ public class Main {
         return null;
     }
 
-
     private static List<Object> takeInformationToSetDietPlan(Scanner scanner, Goal goal) {
         String gender;
         while (true) {
@@ -412,7 +411,6 @@ public class Main {
 
         return Arrays.asList(gender, age, activityLevel);
     }
-
 
     private static double getCurrentWeight(Scanner scanner) {
         System.out.print(" ".repeat(50) + "Enter Your Current Weight: ");

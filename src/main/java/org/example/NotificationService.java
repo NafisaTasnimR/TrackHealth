@@ -10,7 +10,10 @@ import java.util.List;
 public class NotificationService {
     public void showGoalReminder(String email, GoalFileHandler goalTracker) {
         if (goalTracker.getGoalData(email) != null) {
-            System.out.println("Reminder: Don't forget to log your weight today!");
+            LocalDate lastLoggedDate = goalTracker.getLastLoggedDate(email);
+            if (lastLoggedDate == null || !lastLoggedDate.isEqual(LocalDate.now())) {
+                System.out.println("Reminder: Don't forget to log your weight today!");
+            }
         }
     }
 
@@ -28,7 +31,7 @@ public class NotificationService {
         }
     }
     public void getProTipPerWeek(String email, GoalFileHandler goalTracker) {
-        int daysPassed = goalTracker.calculateDaysPassed(email, "weight_log.txt");
+        int daysPassed = goalTracker.calculateDaysPassed(email);
         if (daysPassed > 0 && daysPassed % 7 == 0) {
             int weekNumber = daysPassed / 7;
             List<String> proTips = readProTipsFromFile();

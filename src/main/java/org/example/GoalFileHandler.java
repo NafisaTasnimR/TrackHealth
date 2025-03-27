@@ -9,8 +9,8 @@ import java.util.Map;
 public class GoalFileHandler {
     private static final String FILE_NAME = "userGoal.csv";
 
-    private LocalDate getLastLoggedDate(String weightLogFile, String email) {
-        File file = new File(weightLogFile);
+    public LocalDate getLastLoggedDate(String email) {
+        File file = new File("weight_log.csv");
         if (!file.exists()) {
             return null;
         }
@@ -97,14 +97,14 @@ public class GoalFileHandler {
                 parts[0]
         );
     }
-    public int calculateDaysPassed(String email, String weightLogFile) {
+    public int calculateDaysPassed(String email) {
         GoalInformation goalInfo = getGoalData(email);
         if (goalInfo == null) {
             return -1;
         }
 
         LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
-        LocalDate lastLogDate = getLastLoggedDate(weightLogFile, email);
+        LocalDate lastLogDate = getLastLoggedDate(email);
 
         if (lastLogDate == null) {
             return -1;

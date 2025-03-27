@@ -1,6 +1,7 @@
 package org.example;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ public class TrackerFileHandler {
     }
     public void saveWeight(String email, double weight) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(getFilePath(), true))) {
-            String date = new Date().toString();
+            String date = LocalDate.now().toString();
             writer.write(email + "," + date + "," + weight);
             writer.newLine();
         } catch (IOException e) {
