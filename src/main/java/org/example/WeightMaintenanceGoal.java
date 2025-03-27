@@ -19,7 +19,7 @@ public class WeightMaintenanceGoal extends Goal {
     @Override
     protected MealPlanService createMealPlanService() {
         return new MealPlanService(0.2,0.3,0.3,
-                0.1,"WeightMaintenance");
+                0.1,new WeightMaintenanceMealPlan(),new MealPlanFormatter());
     }
 
     @Override

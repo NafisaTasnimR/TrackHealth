@@ -20,7 +20,7 @@ public class WeightLossGoal extends Goal {
     @Override
     protected MealPlanService createMealPlanService() {
         return new MealPlanService(0.25, 0.35, 0.30,
-                0.10, "WeightLoss");
+                0.10, new WeightLossMealPlan(),new MealPlanFormatter());
     }
 
     @Override
