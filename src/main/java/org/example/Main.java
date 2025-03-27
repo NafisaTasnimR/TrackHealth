@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import static org.example.Utility.updateConsole;
+
 public class Main {
     private static boolean isRunning = true;
 
@@ -14,7 +16,7 @@ public class Main {
     public static void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         while (isRunning) {
-            System.out.println(" ".repeat(50) + "-----------------------TrackHealth-----------------------");
+            System.out.println(" ".repeat(50) + "-----------------------}  TrackHealth  {-----------------------");
             System.out.println(" ".repeat(75) + "1. Login");
             System.out.println(" ".repeat(75) + "2. Sign Up");
             System.out.println(" ".repeat(75) + "3. Exit");
@@ -23,11 +25,11 @@ public class Main {
 
             switch (caseValue) {
                 case 1 -> {
-                    System.out.println("//////////////////////////////////////////////");
+                    updateConsole();
                     loginMenu(scanner);
                 }
                 case 2 -> {
-                    System.out.println("//////////////////////////////////////////////");
+                    updateConsole();
                     registrationMenu(scanner);
                 }
                 case 3 -> exitApplication();
@@ -104,7 +106,6 @@ public class Main {
     }
 
     private static void userMenu(Scanner scanner, String email) {
-        boolean isRunning = true;
         GoalFileHandler goalFileHandler = new GoalFileHandler();
         GoalTracker goalTracker = new GoalTracker(goalFileHandler);
         HealthTipService healthTipService = new HealthTipService();
@@ -124,7 +125,7 @@ public class Main {
         }
 
         while (true) {
-            System.out.println(" ".repeat(50) + "----------------Welcome To TrackHealth----------------");
+            System.out.println(" ".repeat(50) + "----------------}  Welcome To TrackHealth  {----------------");
             notificationService.showGoalReminder(email);
             notificationService.getProTipPerWeek(email);
             System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
@@ -146,6 +147,7 @@ public class Main {
                         System.out.println(" ".repeat(50) + "You Have Set Your Goal Previously!");
                     }
                     handleUserNavigation(scanner);
+                    updateConsole();
                 }
                 case 2 -> {
                     if (goal != null) {
@@ -154,6 +156,7 @@ public class Main {
                     } else {
                         showSetGoalReminder(scanner);
                     }
+                    updateConsole();
                 }
                 case 3 -> {
                     if (goal != null) {
@@ -162,6 +165,7 @@ public class Main {
                     } else {
                         showSetGoalReminder(scanner);
                     }
+                    updateConsole();
                 }
                 case 4 -> watchProgressSoFarMenu(scanner, email);
                 case 5 -> calculateBMIMenu(scanner);
@@ -182,7 +186,7 @@ public class Main {
 
     private static Goal setFitnessGoalMenu(Scanner scanner, String email) {
         while (isRunning) {
-            System.out.println(" ".repeat(50) + "----------------Set Your Fitness Goal----------------");
+            System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
             Goal goal = takeInformationToSetGoal(scanner, email);
             System.out.println(" ".repeat(50) + "Your goal has been successfully set!");
 
@@ -219,19 +223,19 @@ public class Main {
     }
 
     private static void watchDietPlanMenu(Scanner scanner, Goal goal) {
-        System.out.println(" ".repeat(50) + "----------------Get Your Diet Chart----------------");
+        System.out.println(" ".repeat(50) + "----------------}  Get Your Diet Chart  {----------------");
         List<Object> userInformation = takeInformationToSetDietPlan(scanner);
         goal.setDietPlan((String) userInformation.get(0), (int) userInformation.get(1), (String) userInformation.get(2));
     }
 
     private static void watchWorkoutPlanMenu(Goal goal) {
-        System.out.println(" ".repeat(50) + "----------------Get some Workout Advice----------------");
+        System.out.println(" ".repeat(50) + "----------------}  Get some Workout Advice  {----------------");
         goal.setWorkoutPlan();
     }
 
     private static void watchProgressSoFarMenu(Scanner scanner, String email) {
         while (isRunning) {
-            System.out.println(" ".repeat(50) + "----------------How Close Are You To Achieve Your Goal?----------------");
+            System.out.println(" ".repeat(50) + "----------------}  How Close Are You To Achieve Your Goal?  {----------------");
             System.out.println(" ".repeat(50) + "1. Log Your Weight Today");
             System.out.println(" ".repeat(50) + "2. View Your Progress History");
             System.out.println(" ".repeat(50) + "3. Go Back");
@@ -244,7 +248,7 @@ public class Main {
             GoalFileHandler goalFileHandler = new GoalFileHandler();
             GoalInformation goalInfo = goalFileHandler.getGoalData(email);
             ProgressTracker progressTracker = new ProgressTracker();
-
+            updateConsole();
             switch (choice) {
                 case 1:
                     TrackerFileHandler trackerFileHandler = new TrackerFileHandler("weight_log.csv");
@@ -261,10 +265,12 @@ public class Main {
                         System.out.println(" ".repeat(50) + "You have already logged your weight for today.");
                     }
                     handleUserNavigation(scanner);
+                    updateConsole();
                     break;
                 case 2:
                     progressTracker.showWeightHistory(email);
                     handleUserNavigation(scanner);
+                    updateConsole();
                     break;
                 case 3:
                     System.out.println(" ".repeat(50) + "Returning to the previous menu...");
@@ -277,7 +283,7 @@ public class Main {
         }
     }
     private static void calculateBMIMenu(Scanner scanner) {
-        System.out.println(" ".repeat(50) + "----------------BMI Calculator----------------");
+        System.out.println(" ".repeat(50) + "----------------}  BMI Calculator  {----------------");
         double currentWeight = getCurrentWeight(scanner);
         System.out.print(" ".repeat(60) + "Enter Your Current Height(cm): ");
         double height = scanner.nextDouble();
@@ -285,6 +291,7 @@ public class Main {
         scanner.nextLine();
         System.out.print(" ".repeat(50) + "Press any key to return to the previous menu:");
         scanner.nextLine();
+        updateConsole();
     }
     private static void displayBMIAndCategory(double currentWeight,double height) {
         double bmiValue = HealthMetricsCalculator.calculateBMI(currentWeight,height);
@@ -342,6 +349,7 @@ public class Main {
             goalFileHandler.saveGoalData(goalInfo);
 
             handleUserNavigation(scanner);
+            updateConsole();
 
             return switch (goalType) {
                 case "weightGain" -> new WeightGainGoal(goalInfo);
