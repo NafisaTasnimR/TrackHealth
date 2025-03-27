@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Objects;
+
 public class WeightGainGoal extends Goal {
     public WeightGainGoal(GoalInformation goalInformation) {
         super(goalInformation);
@@ -20,11 +22,14 @@ public class WeightGainGoal extends Goal {
     @Override
     protected MealPlanService createMealPlanService() {
         return new MealPlanService(0.20, 0.30,
-                0.30, 0.20, new WeightGainMealPlan(),new MealPlanFormatter());
+                0.30, 0.20, new WeightGainMealPlan());
     }
 
     @Override
     protected WorkoutPlanService createWorkoutPlanService() {
-        return new WorkoutPlanService(getGoalInformation().getExercisePlace(), "weightGain");
+        if(Objects.equals(getGoalInformation().getExercisePlace(), "home")) {
+            return new WorkoutPlanService(new WeightGainHomeWorkoutPlan());
+        }
+        return new WorkoutPlanService(new WeightGainGymWorkoutPlan());
     }
 }
