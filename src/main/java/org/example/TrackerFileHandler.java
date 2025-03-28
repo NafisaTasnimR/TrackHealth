@@ -32,6 +32,12 @@ public class TrackerFileHandler {
         }
         return false;
     }
+    public boolean canLogWeight(String email){
+        if(hasLoggedWeightToday(email)) {
+            return false;
+        }
+        return true;
+    }
     public void saveWeight(String email, double weight) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(getFilePath(), true))) {
             String date = LocalDate.now().toString();

@@ -21,18 +21,17 @@ public class Main {
             System.out.println(" ".repeat(75) + "2. Sign Up");
             System.out.println(" ".repeat(75) + "3. Exit");
             System.out.print(" ".repeat(75) + "Enter Your Choice: ");
-            int caseValue = scanner.nextInt();
+            String caseValue = scanner.nextLine();
 
             switch (caseValue) {
-                case 1 -> {
-                    updateConsole();
-                    loginMenu(scanner);
-                }
-                case 2 -> {
+                case "1" -> loginMenu(scanner);
+
+                case "2" -> {
                     updateConsole();
                     registrationMenu(scanner);
+                    updateConsole();
                 }
-                case 3 -> exitApplication();
+                case "3" -> exitApplication();
                 default -> System.out.println("Invalid selection. Try again.");
             }
         }
@@ -60,6 +59,7 @@ public class Main {
         System.out.println();
         UserRepository userRepository = new CSVUserRepository();
         AuthenticationService authenticationService = new AuthenticationService(userRepository);
+        updateConsole();
         if (authenticationService.login(email, password)) {
             System.out.println(" ".repeat(75) + "Welcome To TrackHealth!!");
             userMenu(scanner, email);
@@ -110,17 +110,19 @@ public class Main {
         GoalTracker goalTracker = new GoalTracker();
         HealthTipService healthTipService = new HealthTipService();
         NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
-        Goal goal;
+        Goal goal = null;
         GoalInformation goalInformation = goalFileHandler.getGoalData(email);
-        String goalType = goalInformation.getGoalType();
+        if(goalInformation != null) {
+            String goalType = goalInformation.getGoalType();
 
-        switch (goalType.toLowerCase()) {
-            case "weightgain" -> goal = new WeightGainGoal(goalInformation);
-            case "weightloss" -> goal = new WeightLossGoal(goalInformation);
-            case "weightmaintenance" -> goal = new WeightMaintenanceGoal(goalInformation);
-            default -> {
-                System.out.println("Invalid goal type found in data!");
-                goal = null;
+            switch (goalType.toLowerCase()) {
+                case "weightgain" -> goal = new WeightGainGoal(goalInformation);
+                case "weightloss" -> goal = new WeightLossGoal(goalInformation);
+                case "weightmaintenance" -> goal = new WeightMaintenanceGoal(goalInformation);
+                default -> {
+                    System.out.println("Invalid goal type found in data!");
+                    goal = null;
+                }
             }
         }
 
@@ -142,6 +144,8 @@ public class Main {
 
             switch (caseValue) {
                 case 1 -> {
+                    updateConsole();
+                    System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
                     if(goalFileHandler.getGoalData(email) == null) {
                         goal = setFitnessGoalMenu(scanner, email);
                     } else {
@@ -151,6 +155,7 @@ public class Main {
                     updateConsole();
                 }
                 case 2 -> {
+                    updateConsole();
                     if (goal != null) {
                         watchDietPlanMenu(scanner, goal);
                         handleUserNavigation(scanner);
@@ -160,6 +165,7 @@ public class Main {
                     updateConsole();
                 }
                 case 3 -> {
+                    updateConsole();
                     if (goal != null) {
                         watchWorkoutPlanMenu(goal);
                         handleUserNavigation(scanner);
@@ -168,9 +174,24 @@ public class Main {
                     }
                     updateConsole();
                 }
-                case 4 -> watchProgressSoFarMenu(scanner, email);
-                case 5 -> calculateBMIMenu(scanner);
-                case 6 -> logout();
+                case 4 -> {
+                    updateConsole();
+                    if(goal != null) {
+                        watchProgressSoFarMenu(scanner, email);
+                    } else {
+                        showSetGoalReminder(scanner);
+                    }
+                    updateConsole();
+                }
+                case 5 -> {
+                    updateConsole();
+                    calculateBMIMenu(scanner);
+                    updateConsole();
+                }
+                case 6 -> {
+                    updateConsole();
+                    logout();
+                }
                 default -> System.out.println(" ".repeat(50) + "Invalid choice!! Try Again");
             }
         }
@@ -187,7 +208,6 @@ public class Main {
 
     private static Goal setFitnessGoalMenu(Scanner scanner, String email) {
         while (isRunning) {
-            System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
             Goal goal = takeInformationToSetGoal(scanner, email);
             System.out.println(" ".repeat(50) + "Your goal has been successfully set!");
 
@@ -253,24 +273,12 @@ public class Main {
             switch (choice) {
                 case 1:
                     TrackerFileHandler trackerFileHandler = new TrackerFileHandler("weight_log.csv");
-                    if(!trackerFileHandler.hasLoggedWeightToday(email)) {
-                        double currentWeight = getCurrentWeight(scanner);
-                        ProgressCalculator progress = new ProgressCalculator(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
-
-                        if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
-                            System.out.println(" ".repeat(50) + "Weight logged successfully!");
-                            updateConsole();
-                            displayReward(scanner,email,progress);
-                        } else {
-                            System.out.println(" ".repeat(50) + "Failed to log weight.");
-                        }
-                    } else {
-                        System.out.println(" ".repeat(50) + "You have already logged your weight for today.");
-                    }
+                    handleWeightLogging(scanner,email,trackerFileHandler,goalInfo,progressTracker);
                     handleUserNavigation(scanner);
                     updateConsole();
                     break;
                 case 2:
+                    System.out.println(" ".repeat(50) + "----------------}  Weight History  {----------------");
                     progressTracker.showWeightHistory(email);
                     handleUserNavigation(scanner);
                     updateConsole();
@@ -279,6 +287,7 @@ public class Main {
                     System.out.println(" ".repeat(50) + "Returning to the previous menu...");
                     return;
                 case 4:
+                    updateConsole();
                     logout();
                 default:
                     System.out.println(" ".repeat(50) + "Invalid choice. Please select a valid option.");
@@ -437,18 +446,42 @@ public class Main {
         int choice = scanner.nextInt();
         switch (choice) {
             case 1:
+                updateConsole();
                 return;
             case 2:
+                updateConsole();
                 logout();
             default:
                 System.out.println(" ".repeat(50) + "Invalid choice. Please enter 1 or 2.");
         }
     }
-    private static void displayReward(Scanner scanner,String email,ProgressCalculator progressCalculator) {
+    private static boolean displayReward(String email,ProgressCalculator progressCalculator) {
         RewardService rewardService = new RewardService();
-        rewardService.getRewardMessage(email,progressCalculator);
-        System.out.print(" ".repeat(50) + "Enter Any Key To Continue: ");
-        scanner.nextLine();
+        return rewardService.getRewardMessage(email,progressCalculator);
+    }
+    private static void handleWeightLogging(Scanner scanner, String email,
+                                            TrackerFileHandler trackerFileHandler,GoalInformation goalInfo,
+                                             ProgressTracker progressTracker) {
+        System.out.println(" ".repeat(50) + "----------------}  Weight Log  {----------------");
+        if (trackerFileHandler.canLogWeight(email)) {
+            double currentWeight = getCurrentWeight(scanner);
+            ProgressCalculator progress = new ProgressCalculator(goalInfo.getCurrentWeight(), goalInfo.getTargetWeight(), currentWeight, goalInfo.getTimeDuration());
+            boolean loggedSuccessfully = progressTracker.logCurrentWeight(progress, currentWeight, email);
+            if (loggedSuccessfully) {
+                System.out.println(" ".repeat(50) + "Weight logged successfully!");
+            } else {
+                System.out.println(" ".repeat(50) + "Failed to log weight.");
+            }
+            scanner.nextLine();
+            if(displayReward(email, progress)) {
+                System.out.print(" ".repeat(50) + "Enter Any Key To Continue: ");
+                scanner.nextLine();
+                updateConsole();
+            }
+            progressTracker.displayProgress(progress,email);
+        } else {
+            System.out.println(" ".repeat(50) + "You have already logged your weight for today.");
+        }
     }
 
 }

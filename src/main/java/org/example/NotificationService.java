@@ -17,7 +17,7 @@ public class NotificationService {
     }
 
     public void showGoalReminder(String email) {
-        if (goalTracker.hasGoal(email) && goalTracker.shouldRemindToday(email) && !goalTracker.isGoalCompleted(email)) {
+        if (goalTracker.hasGoal(email) && goalTracker.shouldRemindToday(email)) {
             System.out.println("Reminder: Don't forget to log your weight today!");
         }
     }
