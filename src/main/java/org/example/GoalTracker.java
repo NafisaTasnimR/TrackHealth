@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public class GoalTracker {
     private final GoalFileHandler goalFileHandler;
 
-    public GoalTracker(GoalFileHandler goalFileHandler) {
-        this.goalFileHandler = goalFileHandler;
+    public GoalTracker() {
+        this.goalFileHandler = new GoalFileHandler();
     }
 
     public boolean hasGoal(String email) {

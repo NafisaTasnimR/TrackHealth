@@ -37,7 +37,4 @@ public class ProgressTracker {
         return !history.isEmpty();
     }
 
-    public boolean isGoalAchieved(ProgressCalculator progress) {
-        return progress.calculateProgressPercentage() >= 100.0;
-    }
 }
