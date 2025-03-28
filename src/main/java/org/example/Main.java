@@ -107,7 +107,7 @@ public class Main {
 
     private static void userMenu(Scanner scanner, String email) {
         GoalFileHandler goalFileHandler = new GoalFileHandler();
-        GoalTracker goalTracker = new GoalTracker(goalFileHandler);
+        GoalTracker goalTracker = new GoalTracker();
         HealthTipService healthTipService = new HealthTipService();
         NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
         Goal goal;
@@ -128,6 +128,7 @@ public class Main {
             System.out.println(" ".repeat(50) + "----------------}  Welcome To TrackHealth  {----------------");
             notificationService.showGoalReminder(email);
             notificationService.getProTipPerWeek(email);
+            notificationService.checkGoalCompletion(email);
             System.out.println(" ".repeat(75) + "1. Set Your Fitness Goal");
             System.out.println(" ".repeat(75) + "2. Watch Diet Plan According To Your Goal");
             System.out.println(" ".repeat(75) + "3. Watch Workout Plan According To Your Goal");
@@ -258,6 +259,8 @@ public class Main {
 
                         if (progressTracker.logCurrentWeight(progress, currentWeight, email)) {
                             System.out.println(" ".repeat(50) + "Weight logged successfully!");
+                            updateConsole();
+                            displayReward(scanner,email,progress);
                         } else {
                             System.out.println(" ".repeat(50) + "Failed to log weight.");
                         }
@@ -440,6 +443,12 @@ public class Main {
             default:
                 System.out.println(" ".repeat(50) + "Invalid choice. Please enter 1 or 2.");
         }
+    }
+    private static void displayReward(Scanner scanner,String email,ProgressCalculator progressCalculator) {
+        RewardService rewardService = new RewardService();
+        rewardService.getRewardMessage(email,progressCalculator);
+        System.out.print(" ".repeat(50) + "Enter Any Key To Continue: ");
+        scanner.nextLine();
     }
 
 }
