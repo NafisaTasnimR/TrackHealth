@@ -16,7 +16,7 @@ public class RewardService {
     public Reward getReward() {
         return reward;
     }
-    public void getRewardMessage(String email,ProgressCalculator progressCalculator) {
+    public boolean getRewardMessage(String email,ProgressCalculator progressCalculator) {
         if(getGoalTracker().isGoalCompleted(email)) {
             if(getGoalTracker().isGoalAchieved(progressCalculator)) {
                 getReward().displayCongratulatoryMessage();
@@ -24,6 +24,8 @@ public class RewardService {
             } else {
                 getReward().displayMessageForGoalNotAchieved();
             }
+            return true;
         }
+        return false;
     }
 }

@@ -16,7 +16,7 @@ public class ProgressTracker {
         if (progress != null) {
             progress.updateCurrentWeight(weight);
             fileHandler.saveWeight(email, weight);
-            displayProgress(progress, email);
+//            displayProgress(progress, email);
             return true;
         } else {
             System.out.println("You Haven't Entered Any Of The Necessary Information!");

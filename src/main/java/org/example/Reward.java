@@ -27,6 +27,7 @@ public class Reward {
                 "All your hard work and commitment have truly paid off, and you’ve " +
                 "made remarkable progress towards a healthier lifestyle\n" +
                 "Celebrate this achievement and Keep up the great work!!\n" + RESET;
+        System.out.println(additionalMessage);
     }
     public void displayMessageForGoalNotAchieved() {
         String message = CYAN + "\n" +
@@ -34,5 +35,6 @@ public class Reward {
                 "Do Not Get Demotivated!\n" +
                 YELLOW+ "“It does not matter how slowly you go as long as you do not stop.” – Confucius\n"
                 + RESET;
+        System.out.println(message);
     }
 }

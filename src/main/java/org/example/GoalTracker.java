@@ -27,7 +27,9 @@ public class GoalTracker {
         LocalDate endDate = startDate.plusDays(durationDays);
         return !LocalDate.now().isBefore(endDate);
     }
-
+    public boolean isGoalAchieved(ProgressCalculator progress) {
+        return progress.calculateProgressPercentage() >= 100.0;
+    }
     public int calculateDaysPassed(String email) {
         return goalFileHandler.calculateDaysPassed(email);
     }
