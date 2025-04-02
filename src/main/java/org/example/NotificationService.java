@@ -1,15 +1,12 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class NotificationService {
     private final GoalTracker goalTracker;
     private final HealthTipService proTipService;
+    private static final String RED = "\u001B[31m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String RESET = "\u001B[0m";
 
     public NotificationService(GoalTracker goalTracker, HealthTipService proTipService) {
         this.goalTracker = goalTracker;
@@ -18,18 +15,20 @@ public class NotificationService {
 
     public void showGoalReminder(String email) {
         if (goalTracker.hasGoal(email) && goalTracker.shouldRemindToday(email)) {
-            System.out.println("Reminder: Don't forget to log your weight today!");
+            System.out.println(YELLOW + "Reminder: Don't forget to log your weight today!" + RESET);
         }
     }
 
-    public boolean checkGoalCompletion(String email) {
+    public void checkGoalCompletion(String email) {
         if (goalTracker.isGoalCompleted(email)) {
-            System.out.println("Your goal duration has ended!");
+            System.out.println(RED + "Your goal duration has ended!" + RESET);
         }
-        return goalTracker.isGoalCompleted(email);
+        goalTracker.isGoalCompleted(email);
     }
 
     public void getProTipPerWeek(String email) {
+        System.out.print(CYAN);
         proTipService.provideWeeklyTip(email, goalTracker);
+        System.out.print(RESET);
     }
 }

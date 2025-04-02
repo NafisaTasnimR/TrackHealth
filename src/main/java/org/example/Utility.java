@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utility {
-    private static int idCounter = 1;
+    private static int idCounter;
     public static String generateId() {
         String formattedId = String.format("user%02d", idCounter);
         idCounter++;
