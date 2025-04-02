@@ -106,12 +106,12 @@ public class Main {
     }
 
     private static void userMenu(Scanner scanner, String email) {
-        GoalFileHandler goalFileHandler = new GoalFileHandler();
+        GoalManager goalManager = new GoalManager();
         GoalTracker goalTracker = new GoalTracker();
         HealthTipService healthTipService = new HealthTipService();
         NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
         Goal goal = null;
-        GoalInformation goalInformation = goalFileHandler.getGoalData(email);
+        GoalInformation goalInformation = goalManager.getUserGoal(email);
         if(goalInformation != null) {
             String goalType = goalInformation.getGoalType();
 
@@ -119,10 +119,7 @@ public class Main {
                 case "weightgain" -> goal = new WeightGainGoal(goalInformation);
                 case "weightloss" -> goal = new WeightLossGoal(goalInformation);
                 case "weightmaintenance" -> goal = new WeightMaintenanceGoal(goalInformation);
-                default -> {
-                    System.out.println("Invalid goal type found in data!");
-                    goal = null;
-                }
+                default -> System.out.println("Invalid goal type found in data!");
             }
         }
 
@@ -146,7 +143,7 @@ public class Main {
                 case 1 -> {
                     updateConsole();
                     System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
-                    if(goalFileHandler.getGoalData(email) == null) {
+                    if(goalInformation == null) {
                         goal = setFitnessGoalMenu(scanner, email);
                     } else {
                         System.out.println(" ".repeat(50) + "You Have Set Your Goal Previously!");
@@ -177,7 +174,7 @@ public class Main {
                 case 4 -> {
                     updateConsole();
                     if(goal != null) {
-                        watchProgressSoFarMenu(scanner, email);
+                        watchProgressSoFarMenu(scanner, email,goalInformation);
                     } else {
                         showSetGoalReminder(scanner);
                     }
@@ -254,7 +251,7 @@ public class Main {
         goal.setWorkoutPlan();
     }
 
-    private static void watchProgressSoFarMenu(Scanner scanner, String email) {
+    private static void watchProgressSoFarMenu(Scanner scanner, String email,GoalInformation goalInfo) {
         while (isRunning) {
             System.out.println(" ".repeat(50) + "----------------}  How Close Are You To Achieve Your Goal?  {----------------");
             System.out.println(" ".repeat(50) + "1. Log Your Weight Today");
@@ -266,8 +263,6 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            GoalFileHandler goalFileHandler = new GoalFileHandler();
-            GoalInformation goalInfo = goalFileHandler.getGoalData(email);
             ProgressTracker progressTracker = new ProgressTracker();
             updateConsole();
             switch (choice) {
@@ -357,8 +352,9 @@ public class Main {
 
             GoalInformation goalInfo = new GoalInformation(currentWeight, targetWeight, heightInCm, timeDuration, durationInWeek,
                     exercisePlace, goalType, startDate, email);
-            GoalFileHandler goalFileHandler = new GoalFileHandler();
-            goalFileHandler.saveGoalData(goalInfo);
+            //GoalFileHandler goalFileHandler = new GoalFileHandler();
+            GoalManager goalManager =  new GoalManager();
+            goalManager.setNewGoal(email,goalInfo);
 
             handleUserNavigation(scanner);
             updateConsole();
