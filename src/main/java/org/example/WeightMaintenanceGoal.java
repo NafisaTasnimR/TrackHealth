@@ -9,12 +9,7 @@ public class WeightMaintenanceGoal extends Goal {
 
     @Override
     protected double adjustCalories(double tdee) {
-        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
-                "----------------");
-        System.out.printf(" ".repeat(50) + "| %-94s |\n","You Are Maintaining Your Current Weight");
-        System.out.printf(" ".repeat(50) + "| %-94s |\n","Tips: Avoid Overeating & Stick to your TDEE");
-        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
-                "----------------");
+        TextFormatter.printWeeklyWeightMaintenance();
         return tdee;
     }
 

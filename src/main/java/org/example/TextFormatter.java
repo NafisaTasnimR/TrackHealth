@@ -65,9 +65,9 @@ public class TextFormatter {
 
         String message;
         if (distanceToGoal > 0) {
-            message = "You need to gain " + distanceToGoal + " kg to reach your target.";
+            message = "You need to gain " + String.format("%.2f",distanceToGoal) + " kg to reach your target.";
         } else if (distanceToGoal < 0) {
-            message = "You need to lose " + Math.abs(distanceToGoal) + " kg to reach your target.";
+            message = "You need to lose " + String.format("%.2f",Math.abs(distanceToGoal)) + " kg to reach your target.";
         } else {
             message = "Congratulations! You have reached your target weight.";
         }
@@ -85,6 +85,7 @@ public class TextFormatter {
 
         if (history.isEmpty()) {
             System.out.printf(" ".repeat(50) + "| %-40s |%n","  No weight history found. ");
+            System.out.println(BORDER);
         } else {
             System.out.printf(" ".repeat(50) + "| %-10s | %-27s |%n", "Date", "Weight (kg)");
             System.out.println(BORDER);
@@ -94,4 +95,27 @@ public class TextFormatter {
             }
         }
     }
+    public static void printWeeklyWeightGain(double weeklyWeightGain) {
+        String border = " ".repeat(50) + "----------------------------------------------------------------------------------" +
+                "----------------";
+        System.out.println(border);
+        System.out.printf(" ".repeat(50) + "| %-94s |\n", "Your Healthy Weight Gain (Weekly) Target Is " + String.format("%.2f",weeklyWeightGain) + "kg");
+        System.out.println(border);
+    }
+    public static void printWeeklyWeightLoss(double weeklyWeightLoss) {
+        String border = " ".repeat(50) + "----------------------------------------------------------------------------------" +
+                "----------------";
+        System.out.println(border);
+        System.out.printf(" ".repeat(50) + "| %-94s |\n", "Your Healthy Weight Loss (Weekly) Target Is " + String.format("%.2f",weeklyWeightLoss) + "kg");
+        System.out.println(border);
+    }
+    public static void printWeeklyWeightMaintenance() {
+        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
+                "----------------");
+        System.out.printf(" ".repeat(50) + "| %-94s |\n","You Are Maintaining Your Current Weight");
+        System.out.printf(" ".repeat(50) + "| %-94s |\n","Tips: Avoid Overeating & Stick to your TDEE");
+        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
+                "----------------");
+    }
+
 }

@@ -9,13 +9,9 @@ public class WeightLossGoal extends Goal {
 
     @Override
     protected double adjustCalories(double tdee) {
-        System.out.println(" ".repeat(50) +"----------------------------------------------------------------------------------" +
-                "----------------");
-        System.out.printf(" ".repeat(50) + "| %-94s |\n","Your Weekly Weight Loss Target Is "
-                + HealthMetricsCalculator.calculateWeeklyWeightChange(
-                getGoalInformation().getCurrentWeight(), getGoalInformation().getDurationInWeek(), "WeightLoss") + "kg");
-        System.out.println(" ".repeat(50) + "----------------------------------------------------------------------------------" +
-                "----------------");
+        double weeklyWeightLoss = HealthMetricsCalculator.calculateWeeklyWeightChange(
+                getGoalInformation().getCurrentWeight(), getGoalInformation().getDurationInWeek(), "WeightLoss");
+        TextFormatter.printWeeklyWeightLoss(weeklyWeightLoss);
         return tdee-625;
     }
 
