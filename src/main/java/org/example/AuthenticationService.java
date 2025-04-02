@@ -16,7 +16,6 @@ public class AuthenticationService {
             return false;
         } else {
             userRepository.addUser(user);
-            System.out.println("Registration successful!");
             return true;
         }
     }

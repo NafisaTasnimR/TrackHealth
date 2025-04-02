@@ -1,5 +1,9 @@
 package org.example;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,6 +30,39 @@ public class Utility {
             }
         } catch (Exception e) {
             System.out.println("Error clearing the console.");
+        }
+    }
+    public static String getValidStartDate(Scanner scanner) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate tempStartDate = null;
+        String startDate = "";
+
+        while (tempStartDate == null) {
+            System.out.print(" ".repeat(60) + "Enter Your Starting Date (yyyy-MM-dd): ");
+            startDate = scanner.nextLine();
+
+            try {
+                tempStartDate = LocalDate.parse(startDate, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println(" ".repeat(60) +
+                        "Invalid date format! Please enter the date in 'yyyy-MM-dd' format.");
+            }
+        }
+
+        return startDate;
+    }
+    public static String getValidExercisePlace(Scanner scanner) {
+        String input;
+
+        while (true) {
+            System.out.print(" ".repeat(60) + "Prefer Your Exercise Place (home/gym): ");
+            input = scanner.nextLine().trim().toLowerCase();
+
+            if (input.equals("home") || input.equals("gym")) {
+                return input;
+            } else {
+                System.out.println(" ".repeat(60) + "Invalid choice! Please enter only 'home' or 'gym'.");
+            }
         }
     }
 }

@@ -69,7 +69,7 @@ public class TextFormatter {
         } else if (distanceToGoal < 0) {
             message = "You need to lose " + String.format("%.2f",Math.abs(distanceToGoal)) + " kg to reach your target.";
         } else {
-            message = "Congratulations! You have reached your target weight.";
+            message = "Congratulations! You have reached your target.";
         }
 
         System.out.println(" ".repeat(50) + String.format("| %-49s |", message));

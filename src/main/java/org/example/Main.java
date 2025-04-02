@@ -120,7 +120,7 @@ public class Main {
         }
 
         while (true) {
-            System.out.println(" ".repeat(50) + "----------------}  Welcome To TrackHealth  {----------------");
+            System.out.println(" ".repeat(50) + "----------------------}  TrackHealth  {----------------------");
             notificationService.showGoalReminder(email);
             notificationService.getProTipPerWeek(email);
             notificationService.checkGoalCompletion(email);
@@ -139,10 +139,11 @@ public class Main {
                 case 1 -> {
                     updateConsole();
                     System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
-                    if(goalInformation == null) {
+                    if(goalInformation == null || goalTracker.isGoalCompleted(email)) {
                         goal = setFitnessGoalMenu(scanner, email,goalFactory);
                     } else {
                         System.out.println(" ".repeat(50) + "You Have Set Your Goal Previously!");
+                        System.out.println(" ".repeat(50) + "You Can Only Set A New Goal After Completing The Previous One!");
                         System.out.print(" ".repeat(60) + "Press any key to return to the previous menu: ");
                         scanner.nextLine();
                     }
@@ -328,9 +329,8 @@ public class Main {
             }
             System.out.print(" ".repeat(60) + "Enter Your Exercise Time Duration Per Week(Days): ");
             int durationInWeek = scanner.nextInt();
-            System.out.print(" ".repeat(60) + "Prefer Your Exercise Place(home/gym): ");
             scanner.nextLine();
-            String exercisePlace = scanner.nextLine();
+            String exercisePlace = Utility.getValidExercisePlace(scanner);
 
             System.out.println(" ".repeat(60) + "Select Your Goal: ");
             System.out.println(" ".repeat(65) + "1. Weight Gain");
@@ -351,9 +351,7 @@ public class Main {
                     continue;
                 }
             }
-
-            System.out.print(" ".repeat(60) + "Enter Your Starting Date(yyyy-mm-dd): ");
-            String startDate = scanner.nextLine();
+            String startDate = Utility.getValidStartDate(scanner);
             System.out.println(" ".repeat(50) + "Thank You For Entering All The Data!");
             System.out.println(" ".repeat(50) + "Tired??...Get Some Fresh Water! Water Keeps You Hydrated...");
 
