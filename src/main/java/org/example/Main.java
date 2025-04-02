@@ -24,10 +24,14 @@ public class Main {
             String caseValue = scanner.nextLine();
 
             switch (caseValue) {
-                case "1" -> loginMenu(scanner);
+                case "1" -> {
+                    scanner.nextLine();
+                    loginMenu(scanner);
+                }
 
                 case "2" -> {
                     updateConsole();
+                    scanner.nextLine();
                     registrationMenu(scanner);
                     updateConsole();
                 }
@@ -50,10 +54,8 @@ public class Main {
     }
 
     private static void loginMenu(Scanner scanner) {
-        scanner.nextLine();
         System.out.print(" ".repeat(75) + "Enter Your Email: ");
         String email = scanner.nextLine();
-        System.out.println();
         System.out.print(" ".repeat(75) + "Enter Your Password: ");
         String password = scanner.nextLine();
         System.out.println();
@@ -67,29 +69,28 @@ public class Main {
     }
 
     private static void registrationMenu(Scanner scanner) {
-        scanner.nextLine();
-        System.out.print(" ".repeat(75) + "Enter Your Name: ");
+        System.out.println(" ".repeat(50) + "---------------------}  Sign Up  {---------------------");
+        System.out.println(" ".repeat(50) + "Proceed To Enter Necessary Information: ");
+        System.out.print(" ".repeat(60) + "Enter Your Name: ");
         String name = scanner.nextLine();
-        System.out.println();
-        System.out.print(" ".repeat(75) + "Enter Your Age: ");
+        System.out.print(" ".repeat(60) + "Enter Your Age: ");
         int age = scanner.nextInt();
         scanner.nextLine();
-        System.out.print(" ".repeat(75) + "Enter Your Gender(male/female): ");
+        System.out.print(" ".repeat(60) + "Enter Your Gender(male/female): ");
         String gender = scanner.nextLine();
         String email = "";
         boolean validEmail = false;
         while (!validEmail) {
-            System.out.print(" ".repeat(75) + "Enter Your Email: ");
+            System.out.print(" ".repeat(60) + "Enter Your Email: ");
             email = scanner.nextLine();
 
             if (Utility.isValidEmail(email)) {
                 validEmail = true;
             } else {
-                System.out.println(" ".repeat(75) + "Invalid email format! Please enter a valid email.");
+                System.out.println(" ".repeat(60) + "Invalid email format! Please enter a valid email.");
             }
         }
-        scanner.nextLine();
-        System.out.print(" ".repeat(75) + "Enter Your Password: ");
+        System.out.print(" ".repeat(60) + "Enter Your Password: ");
         String password = scanner.nextLine();
         String userId = Utility.generateId();
         User user = new User(userId,name,age,gender, email, password);
@@ -101,26 +102,21 @@ public class Main {
         else {
             System.out.println(" ".repeat(75) + "Registration Failed!!");
         }
-        System.out.print(" ".repeat(75) + "Press any key to return to the previous menu: ");
+        System.out.print(" ".repeat(60) + "Press any key to return to the previous menu: ");
         scanner.nextLine();
     }
 
     private static void userMenu(Scanner scanner, String email) {
         GoalManager goalManager = new GoalManager();
         GoalTracker goalTracker = new GoalTracker();
+        GoalFactory goalFactory = new GoalFactory();
         HealthTipService healthTipService = new HealthTipService();
         NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
         Goal goal = null;
         GoalInformation goalInformation = goalManager.getUserGoal(email);
         if(goalInformation != null) {
             String goalType = goalInformation.getGoalType();
-
-            switch (goalType.toLowerCase()) {
-                case "weightgain" -> goal = new WeightGainGoal(goalInformation);
-                case "weightloss" -> goal = new WeightLossGoal(goalInformation);
-                case "weightmaintenance" -> goal = new WeightMaintenanceGoal(goalInformation);
-                default -> System.out.println("Invalid goal type found in data!");
-            }
+            goal = goalFactory.getGoal(goalType,goalInformation);
         }
 
         while (true) {
@@ -144,11 +140,12 @@ public class Main {
                     updateConsole();
                     System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
                     if(goalInformation == null) {
-                        goal = setFitnessGoalMenu(scanner, email);
+                        goal = setFitnessGoalMenu(scanner, email,goalFactory);
                     } else {
                         System.out.println(" ".repeat(50) + "You Have Set Your Goal Previously!");
+                        System.out.print(" ".repeat(60) + "Press any key to return to the previous menu: ");
+                        scanner.nextLine();
                     }
-                    handleUserNavigation(scanner);
                     updateConsole();
                 }
                 case 2 -> {
@@ -174,7 +171,7 @@ public class Main {
                 case 4 -> {
                     updateConsole();
                     if(goal != null) {
-                        watchProgressSoFarMenu(scanner, email,goalInformation);
+                        watchProgressSoFarMenu(scanner, email,goal.getGoalInformation());
                     } else {
                         showSetGoalReminder(scanner);
                     }
@@ -203,11 +200,9 @@ public class Main {
         scanner.nextLine();
     }
 
-    private static Goal setFitnessGoalMenu(Scanner scanner, String email) {
+    private static Goal setFitnessGoalMenu(Scanner scanner, String email,GoalFactory goalFactory) {
         while (isRunning) {
-            Goal goal = takeInformationToSetGoal(scanner, email);
-            System.out.println(" ".repeat(50) + "Your goal has been successfully set!");
-
+            GoalInformation goalInformation = takeInformationToSetGoal(scanner, email);
             while (true) {
                 System.out.println(" ".repeat(50) + "1. Confirm and Continue");
                 System.out.println(" ".repeat(50) + "2. Go Back");
@@ -226,7 +221,14 @@ public class Main {
 
                 switch (choice) {
                     case 1 -> {
-                        return goal;
+                        GoalManager goalManager =  new GoalManager();
+                        goalManager.setNewGoal(email,goalInformation);
+                        assert goalInformation != null;
+                        System.out.println(" ".repeat(60) + "Your goal has been successfully set!");
+                        System.out.print(" ".repeat(60) + "Press any key to return to the previous menu: ");
+                        scanner.nextLine();
+                        updateConsole();
+                        return goalFactory.getGoal(goalInformation.getGoalType(),goalInformation);
                     }
                     case 2 -> {
                         System.out.println(" ".repeat(50) + "Returning to the previous menu...");
@@ -308,7 +310,7 @@ public class Main {
         System.out.printf(" ".repeat(50) + "| %-10s %-5.2f %-64s|\n","Your BMI: " , bmiValue , " (" + bmiCategory + ")");
         System.out.println(" ".repeat(50) + "+----------------------------------------------------------------------------------+");
     }
-    private static Goal takeInformationToSetGoal(Scanner scanner, String email) {
+    private static GoalInformation takeInformationToSetGoal(Scanner scanner, String email) {
         while (isRunning) {
             System.out.println(" ".repeat(50) + "To Set Your Goal You Need To Enter Some Necessary Information First.");
             System.out.print(" ".repeat(60) + "Enter Your Current Weight: ");
@@ -317,8 +319,13 @@ public class Main {
             double targetWeight = scanner.nextDouble();
             System.out.print(" ".repeat(60) + "Enter Your Height(Centi Meter): ");
             double heightInCm = scanner.nextDouble();
-            System.out.print(" ".repeat(60) + "Enter Your Goal Time Duration(Days): ");
-            int timeDuration = scanner.nextInt();
+            int timeDuration = 0;
+            while(timeDuration < 7) {
+                System.out.print(" ".repeat(60) + "Enter Your Goal Time Duration(Days): ");
+                timeDuration = scanner.nextInt();
+                if(timeDuration < 7)  System.out.println(" ".repeat(60) +
+                        "Duration must be at least 7 days! Please enter a valid duration");
+            }
             System.out.print(" ".repeat(60) + "Enter Your Exercise Time Duration Per Week(Days): ");
             int durationInWeek = scanner.nextInt();
             System.out.print(" ".repeat(60) + "Prefer Your Exercise Place(home/gym): ");
@@ -350,23 +357,9 @@ public class Main {
             System.out.println(" ".repeat(50) + "Thank You For Entering All The Data!");
             System.out.println(" ".repeat(50) + "Tired??...Get Some Fresh Water! Water Keeps You Hydrated...");
 
-            GoalInformation goalInfo = new GoalInformation(currentWeight, targetWeight, heightInCm, timeDuration, durationInWeek,
+            return new GoalInformation(currentWeight, targetWeight, heightInCm, timeDuration, durationInWeek,
                     exercisePlace, goalType, startDate, email);
-            //GoalFileHandler goalFileHandler = new GoalFileHandler();
-            GoalManager goalManager =  new GoalManager();
-            goalManager.setNewGoal(email,goalInfo);
-
-            handleUserNavigation(scanner);
-            updateConsole();
-
-            return switch (goalType) {
-                case "weightGain" -> new WeightGainGoal(goalInfo);
-                case "weightLoss" -> new WeightLossGoal(goalInfo);
-                case "weightMaintenance" -> new WeightMaintenanceGoal(goalInfo);
-                default -> throw new IllegalStateException("Unexpected goal type: " + goalType);
-            };
         }
-
         return null;
     }
 

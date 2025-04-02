@@ -3,12 +3,15 @@ package org.example;
 public class GoalManager {
     private GoalFileHandler goalFileHandler;
     private GoalTracker goalTracker;
+    private GoalFactory goalFactory;
 
     public GoalManager() {
         this.goalFileHandler = new GoalFileHandler();
         this.goalTracker = new GoalTracker();
+        this.goalFactory = new GoalFactory();
     }
-    public boolean setNewGoal(String email, GoalInformation newGoal) {
+    public boolean setNewGoal(String email, GoalInformation goalInformation) {
+        Goal newGoal = goalFactory.getGoal(goalInformation.getGoalType(),goalInformation);
         if (!goalTracker.hasGoal(email)) {
             goalFileHandler.saveGoalData(newGoal);
             return true;

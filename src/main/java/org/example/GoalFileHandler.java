@@ -65,7 +65,8 @@ public class GoalFileHandler {
         }
         return false;
     }
-    public boolean saveGoalData(GoalInformation goalInfo) {
+    public boolean saveGoalData(Goal goal) {
+        GoalInformation goalInfo = goal.getGoalInformation();
         Map<String, String> goalData = loadGoalData();
         String dataLine = String.join(",",
                 goalInfo.getEmail(),
