@@ -1,6 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class GoalTracker {
     private final GoalFileHandler goalFileHandler;
@@ -31,6 +32,19 @@ public class GoalTracker {
         return progress.calculateProgressPercentage() >= 100.0;
     }
     public int calculateDaysPassed(String email) {
-        return goalFileHandler.calculateDaysPassed(email);
+
+        GoalInformation goalInfo = goalFileHandler.getGoalData(email);
+        if (goalInfo == null) {
+            return -1;
+        }
+
+        LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
+        LocalDate lastLogDate = goalFileHandler.getLastLoggedDate(email);
+
+        if (lastLogDate == null) {
+            return -1;
+        }
+
+        return (int) ChronoUnit.DAYS.between(startDate, lastLogDate);
     }
 }
