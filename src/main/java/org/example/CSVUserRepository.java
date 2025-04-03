@@ -11,6 +11,7 @@ public class CSVUserRepository implements UserRepository{
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("userData.csv",true))){
             bufferedWriter.write(user.getUserId() + "," + user.getUserName() + ","
                     + user.getAge() + "," + user.getGender() + "," + user.getEmail() + "," + user.getPassword());
+            bufferedWriter.newLine();
             return true;
         }catch (IOException e)
         {

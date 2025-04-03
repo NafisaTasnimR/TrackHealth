@@ -3,14 +3,16 @@ package org.example;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class GoalFileHandler {
+public class GoalFileHandler implements GoalDataRepository{
     private static final String FILE_NAME = "userGoal.csv";
-
-    private LocalDate getLastLoggedDate(String weightLogFile, String email) {
-        File file = new File(weightLogFile);
+    @Override
+    public LocalDate getLastLoggedDate(String email) {
+        File file = new File("weight_log.csv");
         if (!file.exists()) {
             return null;
         }
@@ -42,7 +44,7 @@ public class GoalFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 4) {
+                if (parts.length == 9) {
                     goalData.put(parts[0], line);
                 }
             }
@@ -51,42 +53,91 @@ public class GoalFileHandler {
         }
         return goalData;
     }
-    private void writeToFile(Map<String, String> goalData) {
+    private boolean writeToFile(Map<String, String> goalData) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (String dataLine : goalData.values()) {
                 writer.write(dataLine);
                 writer.newLine();
             }
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
-    public void saveGoalData(String email, String goalType, String startDate, int durationDays) {
+    public boolean saveGoalData(Goal goal) {
+        GoalInformation goalInfo = goal.getGoalInformation();
         Map<String, String> goalData = loadGoalData();
-        String dataLine = email + "," + goalType + "," + startDate + "," + durationDays;
-        goalData.put(email, dataLine);
-        writeToFile(goalData);
+        String dataLine = String.join(",",
+                goalInfo.getEmail(),
+                goalInfo.getGoalType(),
+                goalInfo.getStartDate(),
+                String.valueOf(goalInfo.getTimeDuration()),
+                String.valueOf(goalInfo.getCurrentWeight()),
+                String.valueOf(goalInfo.getTargetWeight()),
+                String.valueOf(goalInfo.getHeightInCm()),
+                String.valueOf(goalInfo.getDurationInWeek()),
+                goalInfo.getExercisePlace()
+        );
+        goalData.put(goalInfo.getEmail(), dataLine);
+        return writeToFile(goalData);
     }
-    public String getGoalData(String email) {
+    @Override
+    public GoalInformation getGoalData(String email) {
         Map<String, String> goalData = loadGoalData();
-        return goalData.getOrDefault(email, null);
-    }
-    public int calculateDaysPassed(String email, String weightLogFile) {
-        String goalData = getGoalData(email);
-        if (goalData == null) {
-            return -1;
+        String dataLine = goalData.get(email);
+        if (dataLine == null) {
+            return null;
         }
 
-        String[] parts = goalData.split(",");
-        LocalDate startDate = LocalDate.parse(parts[2]);
-        LocalDate lastLogDate = getLastLoggedDate(weightLogFile, email);
+        String[] parts = dataLine.split(",");
+        return new GoalInformation(
+                Double.parseDouble(parts[4]),
+                Double.parseDouble(parts[5]),
+                Double.parseDouble(parts[6]),
+                Integer.parseInt(parts[3]),
+                Integer.parseInt(parts[7]),
+                parts[8],
+                parts[1],
+                parts[2],
+                parts[0]
+        );
+    }
+    private boolean deleteUserDataFromFile(String filePath, String email) {
+        File file = new File(filePath);
+        List<String> updatedLines = new ArrayList<>();
 
-        if (lastLogDate == null) {
-            return -1;
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.startsWith(email + ",")) {
+                    updatedLines.add(line);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
 
-        return (int) ChronoUnit.DAYS.between(startDate, lastLogDate);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+            for (String line : updatedLines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
+    public boolean deletePreviousGoal(String email) {
+        String goalFilePath = "userGoal.csv";
+        String progressFilePath = "weight_log.csv";
 
+        boolean userGoalDataDeleted = deleteUserDataFromFile(goalFilePath, email);
+        boolean userLogDataDeleted = deleteUserDataFromFile(progressFilePath, email);
 
+        System.out.println("Previous goal and progress deleted successfully.");
+        return (userGoalDataDeleted && userLogDataDeleted);
+    }
 }
