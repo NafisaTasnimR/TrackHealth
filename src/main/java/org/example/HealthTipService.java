@@ -26,8 +26,8 @@ public class HealthTipService {
         return tips;
     }
 
-    public void provideWeeklyTip(String email, GoalTracker goalTracker) {
-        int daysPassed = goalTracker.calculateDaysPassed(email);
+    public void provideWeeklyTip(String email, GoalTrackerService goalTrackerService) {
+        int daysPassed = goalTrackerService.calculateDaysPassed(email);
         if (daysPassed > 0 && daysPassed % 7 == 0) {
             int weekNumber = daysPassed / 7;
             if (weekNumber <= proTips.size()) {

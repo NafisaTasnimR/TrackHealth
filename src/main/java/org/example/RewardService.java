@@ -1,24 +1,24 @@
 package org.example;
 
 public class RewardService {
-    private GoalTracker goalTracker;
+    private GoalTrackerService goalTrackerService;
     private Reward reward;
 
-    public RewardService(GoalTracker goalTracker,Reward reward) {
-        this.goalTracker = goalTracker;
+    public RewardService(GoalTrackerService goalTracker,Reward reward) {
+        this.goalTrackerService = goalTracker;
         this.reward = reward;
     }
 
-    public GoalTracker getGoalTracker() {
-        return goalTracker;
+    public GoalTrackerService getGoalTrackerService() {
+        return goalTrackerService;
     }
 
     public Reward getReward() {
         return reward;
     }
     public boolean getRewardMessage(String email,ProgressCalculator progressCalculator) {
-        if(getGoalTracker().isGoalCompleted(email)) {
-            if(getGoalTracker().isGoalAchieved(progressCalculator)) {
+        if(getGoalTrackerService().isGoalCompleted(email)) {
+            if(getGoalTrackerService().isGoalAchieved(progressCalculator)) {
                 getReward().displayCongratulatoryMessage();
                 getReward().displayAdditionalMessage();
             } else {
