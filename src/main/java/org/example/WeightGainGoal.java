@@ -3,8 +3,10 @@ package org.example;
 import java.util.Objects;
 
 public class WeightGainGoal extends Goal {
+    private final WorkoutPlanFactory workoutPlanFactory;
     public WeightGainGoal(GoalInformation goalInformation) {
         super(goalInformation);
+        this.workoutPlanFactory = new WeightGainWorkoutPlanFactory();
     }
 
     @Override
@@ -23,9 +25,7 @@ public class WeightGainGoal extends Goal {
 
     @Override
     protected WorkoutPlanService createWorkoutPlanService() {
-        if(Objects.equals(getGoalInformation().getExercisePlace(), "home")) {
-            return new WorkoutPlanService(new WeightGainHomeWorkoutPlan());
-        }
-        return new WorkoutPlanService(new WeightGainGymWorkoutPlan());
+        String exercisePlace = getGoalInformation().getExercisePlace();
+        return new WorkoutPlanService(workoutPlanFactory.createWorkoutPlan(exercisePlace));
     }
 }
