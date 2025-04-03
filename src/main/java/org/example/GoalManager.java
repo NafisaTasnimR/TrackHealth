@@ -5,10 +5,10 @@ public class GoalManager {
     private GoalTracker goalTracker;
     private GoalFactory goalFactory;
 
-    public GoalManager() {
-        this.goalFileHandler = new GoalFileHandler();
-        this.goalTracker = new GoalTracker();
-        this.goalFactory = new GoalFactory();
+    public GoalManager(GoalFileHandler goalFileHandler,GoalTracker goalTracker,GoalFactory goalFactory) {
+        this.goalFileHandler = goalFileHandler;
+        this.goalTracker = goalTracker;
+        this.goalFactory = goalFactory;
     }
     public boolean setNewGoal(String email, GoalInformation goalInformation) {
         Goal newGoal = goalFactory.getGoal(goalInformation.getGoalType(),goalInformation);

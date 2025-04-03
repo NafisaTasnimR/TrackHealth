@@ -107,9 +107,12 @@ public class Main {
     }
 
     private static void userMenu(Scanner scanner, String email) {
-        GoalManager goalManager = new GoalManager();
-        GoalTracker goalTracker = new GoalTracker();
+        GoalFileHandler goalFileHandler = new GoalFileHandler();
+        GoalDataRepository goalDataRepository = new GoalFileHandler();
         GoalFactory goalFactory = new GoalFactory();
+        GoalTracker goalTracker = new GoalTracker(goalDataRepository);
+        GoalManager goalManager = new GoalManager(goalFileHandler,goalTracker,goalFactory);
+
         HealthTipService healthTipService = new HealthTipService();
         NotificationService notificationService = new NotificationService(goalTracker,healthTipService);
         Goal goal = null;
@@ -140,7 +143,7 @@ public class Main {
                     updateConsole();
                     System.out.println(" ".repeat(50) + "----------------}  Set Your Fitness Goal  {----------------");
                     if(goalInformation == null || goalTracker.isGoalCompleted(email)) {
-                        goal = setFitnessGoalMenu(scanner, email,goalFactory);
+                        goal = setFitnessGoalMenu(scanner, email,goalFactory,goalManager);
                     } else {
                         System.out.println(" ".repeat(50) + "You Have Set Your Goal Previously!");
                         System.out.println(" ".repeat(50) + "You Can Only Set A New Goal After Completing The Previous One!");
@@ -172,7 +175,7 @@ public class Main {
                 case 4 -> {
                     updateConsole();
                     if(goal != null) {
-                        watchProgressSoFarMenu(scanner, email,goal.getGoalInformation());
+                        watchProgressSoFarMenu(scanner, email,goal.getGoalInformation(),goalTracker);
                     } else {
                         showSetGoalReminder(scanner);
                     }
@@ -201,7 +204,7 @@ public class Main {
         scanner.nextLine();
     }
 
-    private static Goal setFitnessGoalMenu(Scanner scanner, String email,GoalFactory goalFactory) {
+    private static Goal setFitnessGoalMenu(Scanner scanner, String email,GoalFactory goalFactory,GoalManager goalManager) {
         while (isRunning) {
             GoalInformation goalInformation = takeInformationToSetGoal(scanner, email);
             while (true) {
@@ -222,7 +225,6 @@ public class Main {
 
                 switch (choice) {
                     case 1 -> {
-                        GoalManager goalManager =  new GoalManager();
                         goalManager.setNewGoal(email,goalInformation);
                         assert goalInformation != null;
                         System.out.println(" ".repeat(60) + "Your goal has been successfully set!");
@@ -254,7 +256,7 @@ public class Main {
         goal.setWorkoutPlan();
     }
 
-    private static void watchProgressSoFarMenu(Scanner scanner, String email,GoalInformation goalInfo) {
+    private static void watchProgressSoFarMenu(Scanner scanner, String email,GoalInformation goalInfo,GoalTracker goalTracker) {
         while (isRunning) {
             System.out.println(" ".repeat(50) + "----------------}  How Close Are You To Achieve Your Goal?  {----------------");
             System.out.println(" ".repeat(50) + "1. Log Your Weight Today");
@@ -271,7 +273,7 @@ public class Main {
             switch (choice) {
                 case 1:
                     TrackerFileHandler trackerFileHandler = new TrackerFileHandler("weight_log.csv");
-                    handleWeightLogging(scanner,email,trackerFileHandler,goalInfo,progressTracker);
+                    handleWeightLogging(scanner,email,trackerFileHandler,goalInfo,progressTracker,goalTracker);
                     handleUserNavigation(scanner);
                     updateConsole();
                     break;
@@ -442,13 +444,14 @@ public class Main {
                 System.out.println(" ".repeat(50) + "Invalid choice. Please enter 1 or 2.");
         }
     }
-    private static boolean displayReward(String email,ProgressCalculator progressCalculator) {
-        RewardService rewardService = new RewardService();
+    private static boolean displayReward(String email,ProgressCalculator progressCalculator, GoalTracker goalTracker) {
+        Reward reward = new Reward();
+        RewardService rewardService = new RewardService(goalTracker,reward);
         return rewardService.getRewardMessage(email,progressCalculator);
     }
     private static void handleWeightLogging(Scanner scanner, String email,
                                             TrackerFileHandler trackerFileHandler,GoalInformation goalInfo,
-                                             ProgressTracker progressTracker) {
+                                             ProgressTracker progressTracker,GoalTracker goalTracker) {
         System.out.println(" ".repeat(50) + "----------------}  Weight Log  {----------------");
         if (trackerFileHandler.canLogWeight(email)) {
             double currentWeight = getCurrentWeight(scanner);
@@ -460,7 +463,7 @@ public class Main {
                 System.out.println(" ".repeat(50) + "Failed to log weight.");
             }
             scanner.nextLine();
-            if(displayReward(email, progress)) {
+            if(displayReward(email, progress, goalTracker)) {
                 System.out.print(" ".repeat(50) + "Enter Any Key To Continue: ");
                 scanner.nextLine();
                 updateConsole();

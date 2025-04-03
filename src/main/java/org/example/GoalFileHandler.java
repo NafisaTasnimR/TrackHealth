@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GoalFileHandler {
+public class GoalFileHandler implements GoalDataRepository{
     private static final String FILE_NAME = "userGoal.csv";
-
+    @Override
     public LocalDate getLastLoggedDate(String email) {
         File file = new File("weight_log.csv");
         if (!file.exists()) {
@@ -82,6 +82,7 @@ public class GoalFileHandler {
         goalData.put(goalInfo.getEmail(), dataLine);
         return writeToFile(goalData);
     }
+    @Override
     public GoalInformation getGoalData(String email) {
         Map<String, String> goalData = loadGoalData();
         String dataLine = goalData.get(email);

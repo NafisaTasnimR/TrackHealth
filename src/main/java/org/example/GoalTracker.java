@@ -4,23 +4,23 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class GoalTracker {
-    private final GoalFileHandler goalFileHandler;
+    private final GoalDataRepository goalDataRepository;
 
-    public GoalTracker() {
-        this.goalFileHandler = new GoalFileHandler();
+    public GoalTracker(GoalDataRepository goalDataRepository) {
+        this.goalDataRepository = goalDataRepository;
     }
 
     public boolean hasGoal(String email) {
-        return goalFileHandler.getGoalData(email) != null;
+        return goalDataRepository.getGoalData(email) != null;
     }
 
     public boolean shouldRemindToday(String email) {
-        LocalDate lastLoggedDate = goalFileHandler.getLastLoggedDate(email);
+        LocalDate lastLoggedDate = goalDataRepository.getLastLoggedDate(email);
         return lastLoggedDate == null || !lastLoggedDate.isEqual(LocalDate.now());
     }
 
     public boolean isGoalCompleted(String email) {
-        GoalInformation goalInfo = goalFileHandler.getGoalData(email);
+        GoalInformation goalInfo = goalDataRepository.getGoalData(email);
         if (goalInfo == null) return false;
 
         LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
@@ -33,13 +33,13 @@ public class GoalTracker {
     }
     public int calculateDaysPassed(String email) {
 
-        GoalInformation goalInfo = goalFileHandler.getGoalData(email);
+        GoalInformation goalInfo = goalDataRepository.getGoalData(email);
         if (goalInfo == null) {
             return -1;
         }
 
         LocalDate startDate = LocalDate.parse(goalInfo.getStartDate());
-        LocalDate lastLogDate = goalFileHandler.getLastLoggedDate(email);
+        LocalDate lastLogDate = goalDataRepository.getLastLoggedDate(email);
 
         if (lastLogDate == null) {
             return -1;

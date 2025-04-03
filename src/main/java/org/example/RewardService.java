@@ -4,9 +4,9 @@ public class RewardService {
     private GoalTracker goalTracker;
     private Reward reward;
 
-    public RewardService() {
-        this.goalTracker = new GoalTracker();
-        this.reward = new Reward();
+    public RewardService(GoalTracker goalTracker,Reward reward) {
+        this.goalTracker = goalTracker;
+        this.reward = reward;
     }
 
     public GoalTracker getGoalTracker() {
