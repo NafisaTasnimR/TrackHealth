@@ -1,31 +1,31 @@
 package org.example;
 
 public class GoalManager {
-    private GoalFileHandler goalFileHandler;
-    private GoalTracker goalTracker;
+    private GoalDataRepository goalDataRepository;
+    private GoalTrackerService goalTrackerService;
     private GoalFactory goalFactory;
 
-    public GoalManager(GoalFileHandler goalFileHandler,GoalTracker goalTracker,GoalFactory goalFactory) {
-        this.goalFileHandler = goalFileHandler;
-        this.goalTracker = goalTracker;
+    public GoalManager(GoalDataRepository goalDataRepository,GoalTrackerService goalTracker,GoalFactory goalFactory) {
+        this.goalDataRepository = goalDataRepository;
+        this.goalTrackerService = goalTracker;
         this.goalFactory = goalFactory;
     }
     public boolean setNewGoal(String email, GoalInformation goalInformation) {
         Goal newGoal = goalFactory.getGoal(goalInformation.getGoalType(),goalInformation);
-        if (!goalTracker.hasGoal(email)) {
-            goalFileHandler.saveGoalData(newGoal);
+        if (!goalTrackerService.hasGoal(email)) {
+            goalDataRepository.saveGoalData(newGoal);
             return true;
         }
 
-        if (goalTracker.isGoalCompleted(email)) {
-            goalFileHandler.deletePreviousGoal(email);
-            goalFileHandler.saveGoalData(newGoal);
+        if (goalTrackerService.isGoalCompleted(email)) {
+            goalDataRepository.deletePreviousGoal(email);
+            goalDataRepository.saveGoalData(newGoal);
             return true;
         }
         return false;
     }
     public GoalInformation getUserGoal(String email) {
-        GoalInformation goalInformation = goalFileHandler.getGoalData(email);
+        GoalInformation goalInformation = goalDataRepository.getGoalData(email);
         if (goalInformation == null) {
             System.out.println("No active goal found for " + email);
         }

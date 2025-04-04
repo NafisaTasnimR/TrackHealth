@@ -65,6 +65,7 @@ public class GoalFileHandler implements GoalDataRepository{
         }
         return false;
     }
+    @Override
     public boolean saveGoalData(Goal goal) {
         GoalInformation goalInfo = goal.getGoalInformation();
         Map<String, String> goalData = loadGoalData();
@@ -130,6 +131,7 @@ public class GoalFileHandler implements GoalDataRepository{
         }
         return true;
     }
+    @Override
     public boolean deletePreviousGoal(String email) {
         String goalFilePath = "userGoal.csv";
         String progressFilePath = "weight_log.csv";

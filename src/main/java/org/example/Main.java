@@ -444,9 +444,9 @@ public class Main {
                 System.out.println(" ".repeat(50) + "Invalid choice. Please enter 1 or 2.");
         }
     }
-    private static boolean displayReward(String email,ProgressCalculator progressCalculator, GoalTracker goalTracker) {
+    private static boolean displayReward(String email,ProgressCalculator progressCalculator, GoalTrackerService goalTrackerService) {
         Reward reward = new Reward();
-        RewardService rewardService = new RewardService(goalTracker,reward);
+        RewardService rewardService = new RewardService(goalTrackerService,reward);
         return rewardService.getRewardMessage(email,progressCalculator);
     }
     private static void handleWeightLogging(Scanner scanner, String email,
