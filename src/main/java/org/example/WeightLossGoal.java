@@ -21,15 +21,4 @@ public class WeightLossGoal extends Goal {
         return tdee-625;
     }
 
-//    @Override
-//    protected MealPlanService createMealPlanService() {
-//        return new MealPlanService(0.25, 0.35, 0.30,
-//                0.10, new WeightLossMealPlan());
-//    }
-
-//    @Override
-//    protected WorkoutPlanService createWorkoutPlanService() {
-//        String exercisePlace = getGoalInformation().getExercisePlace();
-//        return new WorkoutPlanService(workoutPlanFactory.createWorkoutPlan(exercisePlace));
-//    }
 }

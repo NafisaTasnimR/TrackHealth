@@ -23,13 +23,11 @@ public abstract class Goal {
         double tdee = HealthMetricsCalculator.calculateTDEE(bmr, activityLevel);
         double dailyCalorieNeed = adjustCalories(tdee);
 
-        //MealPlanService mealPlanService = createMealPlanService();
         mealPlanService.generateMealPlan(dailyCalorieNeed);
 
         return true;
     }
     public boolean setWorkoutPlan(){
-        //WorkoutPlanService workoutPlan = createWorkoutPlanService();
         if(workoutPlanService == null){
             return false;
         }
@@ -38,8 +36,6 @@ public abstract class Goal {
     }
 
     protected abstract double adjustCalories(double tdee);
-    //protected abstract MealPlanService createMealPlanService();
-    //protected abstract WorkoutPlanService createWorkoutPlanService();
 
     public GoalInformation getGoalInformation() {
         return goalInformation;

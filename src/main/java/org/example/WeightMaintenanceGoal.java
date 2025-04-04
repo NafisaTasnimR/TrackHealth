@@ -17,15 +17,4 @@ public class WeightMaintenanceGoal extends Goal {
         return tdee;
     }
 
-//    @Override
-//    protected MealPlanService createMealPlanService() {
-//        return new MealPlanService(0.2,0.3,0.3,
-//                0.1,new WeightMaintenanceMealPlan());
-//    }
-
-//    @Override
-//    protected WorkoutPlanService createWorkoutPlanService() {
-//        String exercisePlace = getGoalInformation().getExercisePlace();
-//        return new WorkoutPlanService(workoutPlanFactory.createWorkoutPlan(exercisePlace));
-//    }
 }
