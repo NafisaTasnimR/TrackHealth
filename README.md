@@ -5,48 +5,48 @@ Maintaining fitness can sometimes feel monotonous—following strict routines, s
 
 ## Features
 ### Goal Setting
-Users can select a fitness goal — Weight Gain, Weight Loss, or Maintenance.
-They provide essential details like current weight, target weight, height, goal duration, country, and workout location to begin their journey.
+Users can select a fitness goal — Weight Gain, Weight Loss, or Maintenance.  
+They provide essential details like current weight, target weight, height, goal duration, country, and workout location to begin their journey.  
 
 ### Personalized Plans
-Based on the selected goal, the application generates customized workout routines and meal plans using dedicated services. 
-These are tailored to support the user’s fitness objective effectively.
+Based on the selected goal, the application generates customized workout routines and meal plans using dedicated services.   
+These are tailored to support the user’s fitness objective effectively.  
 
 ### Progress Tracking
-Users can log their current weight over time.
-The application calculates BMI and progress percentage
-Weight logs are saved using the file system
-Users can visually track how close they are to reaching their goals
-Logging is limited to once per day to ensure meaningful tracking.
+Users can log their current weight over time.  
+The application calculates BMI and progress percentage  
+Weight logs are saved using the file system  
+Users can visually track how close they are to reaching their goals  
+Logging is limited to once per day to ensure meaningful tracking.  
 
 ### Health Insights
 Users receive insights like:
 
 - BMI Calculation
-- Calorie Needs
+- Calorie Needs  
 These help users better understand their fitness profile and make informed decisions throughout their journey.
 
 ### Motivation & Rewards
-The application shows timely reminders to log weight and stay on track. 
-Users who consistently track their progress receive weekly health tips and are rewarded with a congratulatory message upon achieving their goals. 
-It will also motivate you to stay positive even if you were not able to reach your goal.
+The application shows timely reminders to log weight and stay on track.  
+Users who consistently track their progress receive weekly health tips and are rewarded with a congratulatory message upon achieving their goals.   
+It will also motivate you to stay positive even if you were not able to reach your goal.  
 
 ## How It Works
 
-**User Registration & Login**
-    Users create an account and log in to access personalized features.
+**User Registration & Login**  
+    Users create an account and log in to access personalized features.  
 
-**Set a Goal**
-    Choose between weight gain, loss, or maintenance. Enter personal and fitness-related details.
+**Set a Goal**  
+    Choose between weight gain, loss, or maintenance. Enter personal and fitness-related details.  
 
-**Get Your Plan**
-    TrackHealth generates a diet and workout plan based on the user's inputs.
+**Get Your Plan**  
+    TrackHealth generates a diet and workout plan based on the user's inputs.  
 
-**Track Progress**
-    Log weight regularly to see visual progress and updated metrics.
+**Track Progress**  
+    Log weight regularly to see visual progress and updated metrics.  
 
-**Stay Motivated**
-    Receive weekly tips, reminders, and rewards for consistency and goal achievement.
+**Stay Motivated**  
+    Receive weekly tips, reminders, and rewards for consistency and goal achievement.  
 
 ## Technologies Used
 
