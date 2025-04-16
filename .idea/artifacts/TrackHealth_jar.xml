@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TrackHealth:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TrackHealth_jar</output-path>
+    <root id="archive" name="TrackHealth.jar">
+      <element id="module-output" name="TrackHealth" />
+    </root>
+  </artifact>
+</component>

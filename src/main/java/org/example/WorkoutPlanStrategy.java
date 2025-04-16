@@ -1,5 +1,5 @@
 package org.example;
 
-public interface WorkoutPlan {
+public interface WorkoutPlanStrategy {
     void suggestWorkoutPlan();
 }

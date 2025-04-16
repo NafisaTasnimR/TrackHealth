@@ -2,13 +2,13 @@ package org.example;
 
 public class WorkoutPlanService {
 
-    private WorkoutPlan workoutPlan;
+    private WorkoutPlanStrategy workoutPlan;
 
-    public WorkoutPlanService(WorkoutPlan workoutPlan) {
+    public WorkoutPlanService(WorkoutPlanStrategy workoutPlan) {
         this.workoutPlan = workoutPlan;
     }
 
-    public WorkoutPlan getWorkoutPlan() {
+    public WorkoutPlanStrategy getWorkoutPlan() {
         return workoutPlan;
     }
 

@@ -1,6 +1,6 @@
 package org.example;
 
-public class WeightLossGymWorkoutPlan implements WorkoutPlan {
+public class WeightLossGymWorkoutPlan implements WorkoutPlanStrategy {
     @Override
     public void suggestWorkoutPlan() {
         TextFormatter.formatWorkoutPlan(

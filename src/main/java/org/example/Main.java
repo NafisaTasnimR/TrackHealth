@@ -43,7 +43,7 @@ public class Main {
     }
 
     private static void exitApplication() {
-        System.out.println("Thank You For Using HireUp!");
+        System.out.println("Thank You For Using TrackHealth! Always Be Healthy!!");
         System.out.println("Exiting The System...");
         isRunning = false;
         System.exit(0);
